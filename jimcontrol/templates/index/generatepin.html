@@ -1,0 +1,143 @@
+{% extends "index/adminbase.html" %}
+
+
+{% load static %}
+
+{% block content %}
+	<div class="dashbody">
+		<div class="innernavpanel">
+			<a href="#" data-access="#generate" class="innernav innernavshowactive">Generate Pin</a>
+			<a href="#" data-access="#changepin" class="innernav">Change Pin</a>
+			<a href="#" data-access="#pins" class="innernav">Pins</a>
+
+		</div>
+
+		<!-- Generate registration codes -->
+		<div class="innernavactive" id="generate" >
+			<h2>Generate Registration Codes</h2>
+			<div class="dashcontainer">
+				<form class="generateform" action="" method="post">
+					{% csrf_token %}
+					<div class="rol-1">
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<label>Number of Pin</label>
+								<input type="number" max="1000" min="1" name="number" placeholder="Enter Number of Pin" class="numinput" required>
+							</div>
+						</div>
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<label>Security Pin</label>
+								<input type="password" name="pincode" placeholder="Enter Security Pincode" required>
+							</div>
+						</div>
+					</div>
+					<br>
+					<input type="submit" value="Generate" class="gensubmit">
+					<br>
+				</form>
+				<br>
+				{% if codes %}
+					<table>
+						<div class="left">
+							<!-- <h4>Date: </h4> -->
+							<span class="numberof">Number: {{codes | length}}</span>
+						</div>
+						<tr class="heading">
+							<td class="request">Serial Number</td>
+							<td class="earning">Registration Codes</td>
+						</tr>
+
+						{% for code in codes %}
+							<tr>
+								<td class="request">{{ forloop.counter }}</td>
+								<td class="earning">{{ code }}</td>
+							</tr>
+						{% endfor %}
+					</table>
+					<br>
+					<button onclick="window.print()">Print</button>
+					<!-- <form class="generateform">
+						<div class="rol-1">
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<label>Send to (email)</label>
+									<input type="email" name="email" placeholder="Enter Email Address">
+								</div>
+							</div>
+						</div>
+						<br>
+						<input type="submit" value="Send" class="gensubmit">
+						<br>
+					</form> -->
+				{% endif %}
+			</div>
+		</div>
+
+		<!-- Change Pincode panel -->
+		<div class="reg-container hide" id="changepin">
+			<img src="{% static 'index/img/user.png' %}" class="legend">
+			<form action="/jimcontrol/admin/changepin/" method="post">
+				{% csrf_token %}
+				<h2 class="white">Change Pincode</h2>
+				
+				<br>
+				<div class="lg-rol">
+					<div class="col-6-lg">
+						<label>Current Pincode</label>
+						<input type="password" name="currentpincode" placeholder="Enter Current Pincode" required>
+					</div>
+				</div>
+				<br>
+				<div class="rol-1">
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>New Pincode</label>
+							<input type="password" name="newpin" placeholder="Choose new pincode" required>
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Confirm</label>
+							<input type="password" name="newpin2" placeholder="Confirm Pincode" required>
+						</div>
+					</div>
+				</div>
+				<br>
+				<input type="submit" value="Update" class="regsubmit">
+			</form>
+		</div>
+
+		<!--  -->
+		<div class="dashcontainer hide" id="pins">
+			<h2 style="text-align: center;">Pins</h2>
+			{% if pins %}
+				<table>
+					<div class="left">
+						<!-- <h4>Date: </h4> -->
+						<span class="numberof">Number: {{pins | length}}</span>
+					</div>
+					<tr class="heading">
+						<td class="request">Ref. Number</td>
+						<td class="earning">Codes</td>
+						<td class="earning">Status</td>
+					</tr>
+
+					{% for pin in pins %}
+						<tr>
+							<td class="request">{{ pin.pk }}</td>
+							<td class="earning">{{ pin.code }}</td>
+							{% if pin.status %}
+								<td class="earning">Used</td>
+							{% else %}
+								<td class="earning">Active</td>
+							{% endif %}
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<h4>No pin generated yet</h4>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

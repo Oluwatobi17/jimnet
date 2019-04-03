@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
+
+	<nav class="navbar">
+		<span class="logo">Jim Net</span>
+
+		<a href="/" class="loginA">Login</a>
+		<a href="/signup" class="loginA">Register</a>
+
+	</nav>
+
+	<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
+	<script type="text/javascript" src="{% static 'index/js/js.js' %}"></script>
+	<script type="text/javascript" src="{% static 'index/js/reg.js' %}"></script>
+</head>
+<body class="regbody">
+	<ul id="messagelist">
+		<p id="reactmessage" class="error hide"></p>
+		{% if messages %}
+			{% for message in messages %}
+				<li id="message" {% if message.tags %} class="{{message.tags}}" {% endif %}>
+					{{message}}
+				</li>
+			{% endfor %}
+		{% endif %}
+	</ul>
+	<div class="reg-container">
+		<img src="{% static 'index/img/user.png' %}" class="legend">
+		<form action="" method="post">
+			{% csrf_token %}
+			<h2 class="white">Membership Registration Form</h2>
+			<div class="rol-1">
+				<div class="sm-rol-1">
+					<div class="col-5">
+						<label>Registration code</label>
+						<input type="text" name="regcode" placeholder="Enter Registration Code" required>
+					</div>
+				</div>
+
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Referral/Sponsor</label>
+						<input type="text" name="sponsor" placeholder="Enter Referral" value="Jimmoney" required onmouseout="checksponsor()">
+					</div>
+				</div>
+				<span class="sub-topic">Personal Information</span>
+
+				<div class="sm-rol-1">
+					<div class="col-5">
+						<label>First Name</label>
+						<input type="text" name="first_name" placeholder="Enter First Name" required>
+					</div>
+				</div>
+
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Surname</label>
+						<input type="text" name="last_name" placeholder="Enter Surname" required>
+					</div>
+				</div>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Phone No</label>
+						<input type="text" name="phoneno" placeholder="Enter Phone Number" required>
+					</div>
+				</div>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Email</label>
+						<input type="email" name="email" placeholder="Enter Email" required>
+					</div>
+				</div>
+
+			</div>
+			<!-- <h3 class="sub-topic">Personal Information</h3> -->
+			<span class="sub-topic">Security Information</span>
+			<div class="lg-rol">
+				<div class="col-6-lg">
+					<label>Username</label>
+					<input type="text" name="username" placeholder="Choose Username" onmouseout="checkusername()" required>
+				</div>
+			</div>
+			<div class="rol-1">
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Password</label>
+						<input type="password" name="password" placeholder="Choose Password" required>
+					</div>
+				</div>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Confirm Password</label>
+						<input type="password" name="password2" placeholder="Confirm Password" onmouseout="checkpassquality()" required>
+					</div>
+				</div>
+
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Pincode</label>
+						<input type="password" name="pincode" placeholder="Confirm Pincode" required>
+					</div>
+				</div>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Confirm Pincode</label>
+						<input type="password" name="pincode2" placeholder="Confirm Pincode" onmouseout="checkpinquality()" required>
+					</div>
+				</div>
+			</div>
+			<p class="forget">Accept Terms and Conditions <input type="checkbox" required></p>
+			<input type="submit" value="Register" class="regsubmit">
+		</form>
+
+	</div>
+</body>
+</html>

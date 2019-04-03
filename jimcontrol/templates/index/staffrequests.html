@@ -1,0 +1,85 @@
+{% extends "index/adminbase.html" %}
+
+
+{% load static %}
+
+{% block content %}
+	<div class="dashbody">
+		<div class="innernavpanel">
+			<a href="#" data-access="#oldrequest" class="innernav innernavshowactive">All Request</a>
+			<a href="#" data-access="#newrequest" class="innernav" id="clearRequest" data-job="{{user.job}}">New</a>
+		</div>
+
+		<div class="innernavactive" id="oldrequest">
+			<div class="dashcontainer">
+				<h2>Withdraw Requests</h2>
+
+				{% if requests %}
+					<table>
+						<tr class="heading">
+							<td class="level">Date</td>
+							<td class="ref">Username</td>
+							<td class="earning">Earnings</td>
+							<td class="confirm">Level</td>
+							<td class="confirm">Request</td>
+							<td class="request">Payment Status</td>
+							<td class="request"></td>
+						</tr>
+						{% for request in requests %}
+							<tr>
+								<td class="level sm">{{ request.date|date:"d, M, Y G:i" }}</td>
+								<td class="ref pointer">{{request.user.username}}</td>
+								<td class="earning">#{{request.user.totearning}}</td>
+								<td class="confirm">L{{request.level}}</td>
+								<td class="confirm">#{{request.amount}}</td>
+								{% if request.staffstatus %}
+									<td class="confirm">Processed</td>
+									<td class="request"><a href="#" class="withdraw">Process</a></td>
+								{% else %}
+									<td class="confirm" id="{{request.pk}}status">Pending</td>
+									<td class="request"><a href="#" class="withdraw active staffprocessbut" id="{{request.pk}}">Process</a></td>
+								{% endif %}
+							</tr>
+						{% endfor %}
+					</table>
+				{% else %}
+					<h4>No request has been made</h4>
+				{% endif %}
+			</div>	
+		</div>
+
+
+		<!-- Container to show new withdrawal request and to be printed -->
+		<div class="hide" id="newrequest">
+			<div class="dashcontainer">
+				<div class="right">
+					<h4 class="alignleft">Staff: {{user.username}}</h4>
+				</div>
+				<h2>New Requests</h2>
+				{% if newrequest %}
+					<table>
+						<tr class="heading">
+							<td class="level">Date</td>
+							<td class="ref">Username</td>
+							<td class="earning">Earnings</td>
+							<td class="confirm">Level</td>
+							<td class="confirm">Request</td>
+						</tr>
+						{% for new in newrequest %}
+							<tr>
+								<td class="level sm" style="width: 20%;">{{new.request.date|date:"d, M, Y G:i"}}</td>
+								<td class="ref pointer">{{new.request.user.username}}</td>
+								<td class="earning">#{{new.request.user.totearning}}</td>
+								<td class="confirm">L{{new.request.level}}</td>
+								<td class="confirm" style="width: 20%;">#{{new.request.amount}}</td>
+							</tr>
+						{% endfor %}
+					</table>
+					<button class="print right" onclick="window.print()">Print</button>
+				{% else %}
+					<h4>No request yet</h4>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

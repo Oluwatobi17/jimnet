@@ -1,0 +1,128 @@
+{% extends "index/base.html" %}
+
+
+{% load static %}
+
+{% block content %}
+	 
+<div class="dashbody">
+	<div class="reg-container stages">
+		<img src="{% static 'index/img/user.png' %}" class="legend">
+		<form method="post" action="/editprofile/">
+			{% csrf_token %}
+			<h2 class="userhead">{{user.username}}</h2>
+			<div class="rol-1">
+				<span class="sub-topic">Personal Information</span>
+
+				<div class="sm-rol-1">
+					<div class="col-5">
+						<label>First Name</label>
+						<input type="text" name="first_name" placeholder="Enter First Name" value="{{user.first_name}}" required>
+					</div>
+				</div>
+
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Surname</label>
+						<input type="text" name="last_name" placeholder="Enter Surname" value="{{user.last_name}}" required>
+					</div>
+				</div>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Phone No</label>
+						<input type="text" name="phoneno" placeholder="Enter Phone Number" value="{{user.phoneno}}" required>
+					</div>
+				</div>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Email</label>
+						<input type="email" name="email" placeholder="Enter Email" value="{{user.email}}" required>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="rol-1">
+				<span class="sub-topic">Bank Information</span>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Account Name</label>
+						<input type="text" name="accname" placeholder="Enter Account Name" value="{{user.accname}}">
+					</div>
+				</div>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Account Number</label>
+						<input type="text" name="accno" placeholder="Enter Account Number" value="{{user.accno}}">
+					</div>
+				</div>
+				<div class="lg-rol">
+					<div class="col-6-lg">
+						<label>Bank Name</label>
+						<select name="bankname">
+							<option value="null">Select bank</option>
+							<option value="GTbank">GTbank</option>
+							<option value="FirstBank">FirstBank</option>
+							<option value="AccessBank">AccessBank</option>
+							<option value="Ecobank">Ecobank</option>
+							<option value="UBA">UBA</option>
+							<option value="Sterling">Sterling</option>
+							<option value="Stanbic">Stanbic IBTC</option>
+							<option value="FCMB">FCMB</option>
+							<option value="Wema">Wema</option>
+							<option value="Union">Union</option>
+							<option value="Zenith">Zenith</option>
+							<option value="Fidelity">Fidelity</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<!-- <h3 class="sub-topic">Personal Information</h3> -->
+			<span class="sub-topic">Security Information</span>
+			<div class="lg-rol">
+				<div class="col-6-lg">
+					<label>Current Password</label>
+					<input type="password" name="currentpassword" placeholder="Enter Current Password">
+				</div>
+			</div>
+			<div class="rol-1">
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Change Password</label>
+						<input type="password" name="newpassword" placeholder="Choose Password">
+					</div>
+				</div>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Confirm</label>
+						<input type="password" name="newpassword2" placeholder="Confirm Password">
+					</div>
+				</div>
+			<div class="lg-rol">
+				<div class="col-6-lg">
+					<label>Current Pincode</label>
+					<input type="password" name="currentpincode" placeholder="Enter Current Pincode">
+				</div>
+			</div>
+			<div class="rol-1">
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Choose Pincode</label>
+						<input type="password" name="newpincode" placeholder="Choose Pincode">
+					</div>
+				</div>
+				<div class="sm-rol-2">
+					<div class="col-6">
+						<label>Confirm Pincode</label>
+						<input type="password" name="newpincode2" placeholder="Confirm Pincode">
+					</div>
+				</div>
+			</div>
+			<br>
+			<input type="submit" value="Edit Profile" class="regsubmit">
+		</form>
+	</div>
+</div>
+
+{% endblock %}

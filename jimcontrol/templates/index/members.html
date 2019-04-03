@@ -1,0 +1,121 @@
+{% extends "index/adminbase.html" %}
+
+
+{% load static %}
+
+{% block content %}
+	<div class="dashbody fromleft">
+		<h2>Members({{members | length}})</h2>
+		{% if members %}
+			{% for member in members %}
+				<div class="infodrop">
+					
+					<div>
+						<!-- Info that always show -->
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<span class="dropfront">{{member.username}}</span>
+							</div>
+						</div>
+
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<span class="dropfront">{{member.first_name}} {{member.last_name}}</span>
+							</div>
+							<span class="right more" data-drop="{{member.pk}}">More</span>
+						</div>
+						<!-- Info that show on click -->
+						<div class="hide" id="{{member.pk}}">
+							<br>
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Total Earnings: #{{member.totearning}}</span>
+								</div>
+							</div>
+
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Balance: #{{member.balance}}</span>
+								</div>
+							</div>
+							<br>
+							<br>
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Level: L{{member.level}}</span>
+								</div>
+							</div>
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Network: {{member.network}}</span>
+								</div>
+							</div>
+							<br>
+							<br>
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Registration Code: {{member.regcode}}</span>
+								</div>
+							</div>
+							
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Sponsor: {{member.sponsor}}</span>
+								</div>
+							</div>
+
+							<br>
+							<br>
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Email: {{member.email}}</span>
+								</div>
+							</div>
+
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Phone No: {{member.phoneno}}</span>
+								</div>
+							</div>
+
+							<br>
+							<br>
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Bank Name: {{member.bankname}}</span>
+								</div>
+							</div>
+
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Account Name: {{member.accname}}</span>
+								</div>
+							</div>
+							<br>
+							<br>
+
+							
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Account No: {{member.accno}}</span>
+								</div>
+							</div>
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront2">Date of Membership: {{member.dateofmembership|date:"d, M, Y G:i"}}</span>
+								</div>
+							</div>
+
+							<br>
+							<div class="sm-rol-2" style="margin-top: 30px;">
+								<div class="col-6">
+									<span class="dropfront2 dropbottom">Last Login: {{member.last_login|date:"d, M, Y G:i"}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
+{% endblock %}

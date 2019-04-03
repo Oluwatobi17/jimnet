@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
+
+	<nav class="navbar">
+		<span class="logo">Jim Net</span>
+
+		<span id="full">
+			<a href="/signout" class="loginA">Logout</a>
+			<a href="/paymenthistory" class="loginA">Payment History</a>
+			<a href="/dashboard" class="loginA">Home</a>
+			<a href="/profile" class="loginA">{{user.username}}</a>
+		</span>
+
+		<span class="hide dropcontent" id="half">
+			<img src="{% static 'index/img/but.png' %}" class="dropimg">
+
+			<div class="hide" id="data">
+				<a href="/signout" class="navtag">Logout</a>
+				<a href="/paymenthistory" class="navtag">Payment History</a>
+				<a href="/profile" class="navtag">{{user.username}}</a>
+				<a href="/dashboard" class="navtag">Home</a>
+			</div>
+		</span>
+	</nav>
+	
+</head>
+<body class="dashbody">
+	<ul id="messagelist">
+		<p id="reactmessage" class="error hide"></p>
+		{% if messages %}
+			{% for message in messages %}
+				<li id="message" {% if message.tags %} class="{{message.tags}}" {% endif %}>
+					{{message}}
+				</li>
+			{% endfor %}
+		{% endif %}
+	</ul>
+	<div class="right">
+		<br>
+		<h4 class="alignleft" style="margin-right: 20px;">Balance: #{{user.balance}}; Network: {{user.network}}</h4>
+		<form class="withform" onsubmit="return false;">
+			{% csrf_token %}
+			<label style="color: black;">Withdraw all</label>
+
+			<input type="checkbox" id="check">
+			<input type="submit" value="Withdraw" data-amount="{{user.balance}}" class="withsubmit pointer withdraw" id="withbut">
+		</form>
+	</div>
+	<div class="withdrawcontainer hide">
+
+		<form class="withdrawform" method="post" action="/withdraw/">
+			{% csrf_token %}
+			<img src="{% static 'index/img/close.png' %}" class="closeimg2">
+			<h2>Request Withdraw</h2>
+			<br>
+			<label style="color: black;">Amount: </label>
+			<input type="number" name="amount" value="" max="{{user.balance}}" min="1000" required id="amountreq">
+
+			<h4 class="leftalign">Bank Name: {{user.bankname}}</h4>
+
+			<h4 class="leftalign">Account Name: {{user.accname}}</h4>
+
+			<h4 class="leftalign">Account Number: {{user.accno}}</h4>
+			<h4 style="text-align: left;"><label style="color: black;">Pincode: </label>
+			<input type="password" name="pincode" placeholder="Enter Pincode" required>
+
+			<input type="submit" value="Request" class="requestbut">
+			</h4>
+
+		</form>
+	</div>
+	{% block content %}
+
+    {% endblock %}
+
+    <footer>
+    	<div style="margin: 10px auto;">
+	    	<div class="left footcontainer">
+	    		<h3 class="white">To Purchase Registration code </h3>
+	    		<h4 class="white">Call:</h4>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    	</div>
+	    	<div class="left footcontainer">
+	    		<h3 class="white">For more details</h3>
+	    		<h4 class="white">Call:</h4>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    	</div>
+	    	<div class="left footcontainer">
+	    		<h3 class="white">For complains</h3>
+	    		<h4 class="white">Call:</h4>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    		<h5 class="white footcontent">Lanre on 09028392912</h5>
+	    	</div>
+    	</div>
+    </footer>
+</body>
+<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'index/js/js.js' %}"></script>
+
+<!-- <script type="text/javascript" src="{% static 'index/js/jsapi' %}"></script> -->
+ </html>

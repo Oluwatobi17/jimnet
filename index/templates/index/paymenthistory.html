@@ -1,0 +1,48 @@
+{% extends "index/base.html" %}
+
+
+{% load static %}
+
+{% block content %}
+	 
+<div class="dashbody">
+	<div class="dashcontainer">
+		
+		<div class="stages">
+			<h2>Your Payment History</h2>
+
+			{% if history %}
+				<table>
+					<tr class="heading">
+						<td class="level">Date</td>
+
+						<td class="earning">Bank Details</td>
+						<td class="confirm">Level</td>
+						<td class="confirm">Request</td>
+						<td class="confirm">Status</td>
+					</tr>
+
+					
+					{% for hist in history %}
+						<tr>
+							<td class="level sm">{{ hist.date|date:"d, M, Y G:i" }}</td>
+
+							<td class="earning">{{hist.bankname}} ; {{hist.accname}} ;{{hist.accno}}</td>
+							<td class="confirm">L{{hist.level}}</td>
+							<td class="confirm">#{{hist.amount}}</td>
+							{% if hist.staffstatus %}
+								<td class="confirm">Paid</td>
+							{% else %}
+								<td class="confirm">Pending</td>
+							{% endif %}
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<h4>No payment history</h4>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
+
+	<nav class="navbar">
+		<span class="logo">Jim Money</span>
+		
+	</nav>
+</head>
+<body class="loginbody">
+	<ul id="messagelist">
+		<p id="reactmessage" class="error hide"></p>
+		{% if messages %}
+			{% for message in messages %}
+				<li id="message" {% if message.tags %} class="{{message.tags}}" {% endif %}>
+					{{message}}
+				</li>
+			{% endfor %}
+		{% endif %}
+	</ul>
+	<div class="loginbody fromleft">
+
+		<div class="reg-container" id="create">
+			<img src="{% static 'index/img/user.png' %}" class="legend">
+			<form action="" method="post">
+				{% csrf_token %}
+				<h2 class="white">Sign Up Admin</h2>
+				<div class="lg-rol">
+					<div class="col-6-lg">
+						<label>Username</label>
+						<input type="text" name="username" placeholder="Choose Username">
+					</div>
+				</div>
+				<div class="rol-1">
+					<div class="sm-rol-1">
+						<div class="col-5">
+							<label>First Name</label>
+							<input type="text" name="firstname" placeholder="Enter First Name">
+						</div>
+					</div>
+
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Surname</label>
+							<input type="text" name="lastname" placeholder="Enter Surname">
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Password</label>
+							<input type="password" name="password" placeholder="Choose Password">
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Confirm Password</label>
+							<input type="password" name="password2" placeholder="Confirm Password">
+						</div>
+					</div>
+					<div class="lg-rol">
+						<div class="col-6-lg">
+							<label>Pincode</label>
+							<input type="password" name="pincode" placeholder="Enter Pincode">
+						</div>
+					</div>
+				</div>
+				<br>
+				<input type="submit" value="Register" class="regsubmit">
+			</form>
+		</div>
+
+		<!-- All staff details -->
+		<div class="hide" id="staff">
+			<h2>Staffs(4)</h2>
+			<div class="infodrop">
+				
+				<div>
+					<!-- Info that always show -->
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<span class="dropfront">Adekola33</span>
+						</div>
+					</div>
+
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<span class="dropfront">Adekola Adejoke</span>
+						</div>
+						<span class="right more" data-drop="898">More</span>
+					</div>
+					<!-- Info that show on click -->
+					<div class="hide" id="898">
+						<br>
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<span class="dropfront">Password: jelili32</span>
+							</div>
+						</div>
+						<div class="sm-rol-2">
+							<div class="col-6-lg">
+								<form>
+									<label style="color: black;">Job</label>
+									<select style="background-color: white; color: black;">
+										<option>Level 2</option>
+										<option>Level 3</option>
+										<option>Level 4</option>
+										<option>Level 5</option>
+										<option>Level 6</option>
+									</select>
+									<input type="submit" value="Update Job" class="jobupdatabut" style="border: 1px solid green; background-color: white; color: black; width: 20%;">
+								</form>
+							</div>
+						</div>
+						<br>
+						<br>
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<a href="/suspend/Olawale" class="dropfront dropsuspend">Suspend</a>
+							</div>
+						</div>
+
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<a href="/delete/Olawale" class="dropfront dropdel">Delete</a>
+							</div>
+						</div>
+
+						<div class="sm-rol-2" style="margin-top: 30px;">
+							<div class="col-6">
+								<span class="dropfront dropbottom">Last Login: 28th of March, 2019 06:19pm</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Second user information starts here -->
+			
+		</div>
+	</div>
+</body>
+</html>

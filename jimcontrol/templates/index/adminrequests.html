@@ -1,0 +1,103 @@
+{% extends "index/adminbase.html" %}
+
+
+{% load static %}
+
+{% block content %}
+	<div class="dashbody">
+		<div class="innernavpanel">
+			<a href="#" data-access="#oldrequest" class="innernav innernavshowactive">All Request</a>
+			<a href="#" data-access="#newrequest" class="innernav" data-job="{{user.job}}">New</a>
+		</div>
+		<div class="dashcontainer innernavactive" id="oldrequest">
+			<h2>Withdraw Requests</h2>
+
+			{% if requests %}
+				<table>
+					<tr class="heading">
+						<td class="level">Date</td>
+						<td class="ref">Username</td>
+						<td class="earning">Total Earnings</td>
+						<td class="confirm">Level</td>
+						<td class="confirm">Request</td>
+						<td class="request">Status(Staff)</td>
+						<td class="request">Status(Admin)</td>
+						<td class="request"></td>
+					</tr>
+
+					{% for request in requests %}
+						<tr>
+							<td class="level sm">{{ request.date|date:"d, M, Y G:i" }}</td>
+							<td class="ref pointer">{{request.user.username}}</td>
+
+							<td class="earning">#{{request.user.totearning}}</td>
+							<td class="confirm">L{{request.user.level}}</td>
+							<td class="confirm">#{{request.amount}}</td>
+							{% if request.staffstatus %}
+								<td class="confirm">Processed</td>
+							{% else %}
+								<td class="confirm">Pending</td>
+							{% endif %}
+
+
+							{% if request.adminstatus %}
+								<td class="confirm">Processed</td>
+								<td class="request"><a href="#" class="withdraw">Process</a></td>
+							{% else %}
+								<td class="confirm" id="{{request.pk}}status">Pending</td>
+								<td class="request"><a href="#" data-pk="{{request.pk}}" class="withdraw active processbut" id="{{request.pk}}">Process</a></td>
+							{% endif %}			
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<p>No request made yet</p>
+			{% endif %}
+		</div>
+		<div class="dashcontainer hide" id="newrequest">
+			<h2>New Requests</h2>
+
+			{% if unapproved %}
+				<table>
+					<tr class="heading">
+						<td class="level">Date</td>
+						<td class="ref">Username</td>
+						<td class="earning">Total Earnings</td>
+						<td class="confirm">Level</td>
+						<td class="confirm">Request</td>
+						<td class="request">Status(Staff)</td>
+						<td class="request">Status(Admin)</td>
+						<td class="request"></td>
+					</tr>
+
+					{% for request in unapproved %}
+						<tr>
+							<td class="level sm">{{ request.date|date:"d, M, Y G:i" }}</td>
+							<td class="ref pointer">{{request.user.username}}</td>
+
+							<td class="earning">#{{request.user.totearning}}</td>
+							<td class="confirm">L{{request.user.level}}</td>
+							<td class="confirm">#{{request.amount}}</td>
+							{% if request.staffstatus %}
+								<td class="confirm">Processed</td>
+							{% else %}
+								<td class="confirm">Pending</td>
+							{% endif %}
+
+
+							{% if request.adminstatus %}
+								<td class="confirm">Processed</td>
+								<td class="request"><a href="#" class="withdraw">Process</a></td>
+							{% else %}
+								<td class="confirm" id="{{request.pk}}status">Pending</td>
+								<td class="request"><a href="#" data-pk="{{request.pk}}" class="withdraw active processbut" id="{{request.pk}}">Process</a></td>
+							{% endif %}			
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<p>No request made yet</p>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

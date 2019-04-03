@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
+
+	<nav class="navbar">
+		<span class="logo">Jim Money</span>
+	</nav>
+</head>
+<body class="loginbody">
+	<div class="login-container">
+		<img src="{% static 'index/img/user.png' %}" class="legend">
+		<form action="" method="post">
+			{% csrf_token %}
+			<h1>Admin Login</h1>
+			<div class="login-field">
+				<label class="alone">Username </label>
+				<input type="text" name="username" placeholder="Enter Username" class="login-input" required>
+			</div>
+
+			<div class="login-field">
+				<label class="alone">Password </label>
+				<input type="password" name="password" placeholder="Enter Password" class="login-input" required>
+			</div>
+
+			<div class="login-field">
+				<input type="submit" value="Login" class="login-submit">
+<!-- 				<p class="forget">Forget password? <a href="#">Click here</a></p>
+ -->		</div>
+		</form>
+
+	</div>
+</body>
+</html>

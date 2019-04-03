@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
+
+	<nav class="navbar">
+		<span class="logo">Jim Net</span>
+		{% if author == 'admin' %}
+			<span id="full">
+				<a href="/jimcontrol/admin/signout" class="loginA">Logout</a>
+				<a href="/jimcontrol/admin/members" class="loginA">Members</a>
+				<a href="/jimcontrol/admin/pin" class="loginA">Pin</a>
+				<a href="/jimcontrol/admin/createstaff" class="loginA">Create Staff</a>
+				<a href="/jimcontrol/admin/requests" class="loginA">Requests</a>
+			</span>
+
+			<span class="hide dropcontent" id="half">
+				<img src="{% static 'index/img/but.png' %}" class="dropimg">
+
+				<div class="hide" id="data">
+					<a href="/jimcontrol/admin/signout" class="navtag">Logout</a>
+					<a href="/jimcontrol/admin/members" class="navtag">Members</a>
+					<a href="/jimcontrol/admin/requests" class="navtag">Requests</a>
+					<a href="/jimcontrol/admin/profile/" class="navtag">Adetunji</a>
+				</div>
+			</span>
+		{% else %}
+			<span id="full">
+				<a href="/jimcontrol/staff/signout" class="loginA">Logout</a>
+				<a href="/jimcontrol/staff/members" class="loginA">Members</a>
+				<a href="/jimcontrol/staff/requests" class="loginA">Requests</a>
+				<a href="/jimcontrol/staff/profile/" class="loginA">{{user.username}}</a>
+			</span>
+
+			<span class="hide dropcontent" id="half">
+				<img src="{% static 'index/img/but.png' %}" class="dropimg">
+
+				<div class="hide" id="data">
+					<a href="/jimcontrol/staff/signout" class="navtag">Logout</a>
+					<a href="/jimcontrol/staff/members" class="navtag">Members</a>
+					<a href="/jimcontrol/staff/requests" class="navtag">Requests</a>
+					<a href="/jimcontrol/staff/profile/" class="navtag">{{username}}</a>
+				</div>
+			</span>
+		{% endif %}
+	</nav>
+</head>
+<body class="dashbody">
+	<ul id="messagelist">
+		<p id="reactmessage" class="error hide"></p>
+		{% if messages %}
+			{% for message in messages %}
+				<li id="message" {% if message.tags %} class="{{message.tags}}" {% endif %}>
+					{{message}}
+				</li>
+			{% endfor %}
+		{% endif %}
+	</ul>
+	{% block content %}
+
+    {% endblock %}
+	<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
+	<script type="text/javascript" src="{% static 'index/js/js.js' %}"></script>
+	<script type="text/javascript" src="{% static 'index/js/jsapi.js' %}"></script>
+</body>
+</html>

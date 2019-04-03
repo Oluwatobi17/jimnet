@@ -1,0 +1,41 @@
+{% extends "index/adminbase.html" %}
+
+
+{% load static %}
+
+{% block content %}
+	<div class="dashbody">
+		<div class="reg-container">
+			<img src="{% static 'index/img/user.png' %}" class="legend">
+			<form action="" method="post">
+				{% csrf_token %}
+				<h2 class="white">Change Password</h2>
+				
+				<br>
+				<div class="lg-rol">
+					<div class="col-6-lg">
+						<label>Current Password</label>
+						<input type="password" name="currentpassword" placeholder="Enter Current Password">
+					</div>
+				</div>
+				<br>
+				<div class="rol-1">
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>New Password</label>
+							<input type="password" name="newpassword" placeholder="Choose new Password">
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Confirm</label>
+							<input type="password" name="newpassword2" placeholder="Confirm Password">
+						</div>
+					</div>
+				</div>
+				<br>
+				<input type="submit" value="Update" class="regsubmit">
+			</form>
+		</div>
+	</div>
+{% endblock %}

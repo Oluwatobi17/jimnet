@@ -1,0 +1,145 @@
+{% extends "index/adminbase.html" %}
+
+
+{% load static %}
+
+{% block content %}
+	<div class="dashbody fromleft">
+		<div class="innernavpanel">
+			<a href="#" data-access="#create" class="innernav innernavshowactive">Create Staff</a>
+			<a href="#" data-access="#staff" class="innernav">Staff</a>
+		</div>
+
+		<div class="reg-container innernavactive" id="create">
+			<img src="{% static 'index/img/user.png' %}" class="legend">
+			<form method="post" action="">
+				{% csrf_token %}
+				<h2 class="white">New Staff Form</h2>
+				<div class="lg-rol">
+					<div class="col-6-lg">
+						<label>Username</label>
+						<input type="text" name="username" placeholder="Choose Username">
+					</div>
+				</div>
+				<div class="rol-1">
+					<div class="sm-rol-1">
+						<div class="col-5">
+							<label>First Name</label>
+							<input type="text" name="firstname" placeholder="Enter First Name">
+						</div>
+					</div>
+
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Surname</label>
+							<input type="text" name="lastname" placeholder="Enter Surname">
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Password</label>
+							<input type="password" name="password" placeholder="Choose Password">
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Confirm</label>
+							<input type="password" name="password2" placeholder="Confirm Password">
+						</div>
+					</div>
+				</div>
+				<div class="lg-rol">
+					<div class="col-6-lg">
+						<label>Job</label>
+						<select name="job">
+							<option value="2">Level 2</option>
+							<option value="3">Level 3</option>
+							<option value="4">Level 4</option>
+							<option value="5">Level 5</option>
+							<option value="6">Level 6</option>
+						</select>
+					</div>
+				</div>
+				<br>
+				<input type="submit" value="Register" class="regsubmit">
+			</form>
+		</div>
+
+		<!-- All staff details -->
+		<div class="hide" id="staff">
+			<h2>Staffs({{staffs | length}})</h2>
+			{% if staffs %}
+				{% for staff in staffs %}
+					<div class="infodrop">
+						
+						<div>
+							<!-- Info that always show -->
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront">{{staff.username}}</span>
+								</div>
+							</div>
+
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront">{{staff.firstname}} {{staff.lastname}}</span>
+								</div>
+								<span class="right more" data-drop="{{staff.pk}}">More</span>
+							</div>
+							<!-- Info that show on click -->
+							<div class="hide" id="{{staff.pk}}">
+								<br>
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<span class="dropfront">Password: {{staff.password}}</span>
+									</div>
+								</div>
+								<div class="sm-rol-2">
+									<div class="col-6-lg">
+										<form action="/jimcontrol/admin/updatejob/{{staff.pk}}/" method="post">
+											{% csrf_token %}
+											<label style="color: black;">Job: Level {{staff.job}}</label>
+											<select style="background-color: white; color: black;" name="job">
+												<option value="2">Level 2</option>
+												<option value="3">Level 3</option>
+												<option value="4">Level 4</option>
+												<option value="5">Level 5</option>
+												<option value="6">Level 6</option>
+											</select>
+											<input type="submit" value="Update Job" class="jobupdatabut" style="border: 1px solid green; background-color: white; color: black; width: 20%;">
+										</form>
+									</div>
+								</div>
+								<br>
+								<br>
+								<div class="sm-rol-2">
+									<div class="col-6">
+										{% if staff.status == 'active' %}
+											<a href="#" class="dropfront dropsuspend actionbut" id="sus{{staff.pk}}" data-work="suspend">Suspend</a>
+										{% else %}
+											<a href="#" class="dropfront dropsuspend actionbut" id="sus{{staff.pk}}" data-work="suspend">Allow</a>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<a href="/jimcontrol/admin/deletestaff/{{staff.pk}}" class="dropfront dropdel actionbut">Delete</a>
+									</div>
+								</div>
+
+								<div class="sm-rol-2" style="margin-top: 30px;">
+									<div class="col-6">
+										<span class="dropfront dropbottom">Last Login: 28th of March, 2019 06:19pm</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<p>You are yet to create a staff</p>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
