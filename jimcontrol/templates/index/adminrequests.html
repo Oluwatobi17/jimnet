@@ -67,7 +67,7 @@
 						<td class="confirm">Request</td>
 						<td class="request">Status(Staff)</td>
 						<td class="request">Status(Admin)</td>
-						<td class="request"></td>
+						<!-- <td class="request"></td> -->
 					</tr>
 
 					{% for request in unapproved %}
@@ -87,16 +87,16 @@
 
 							{% if request.adminstatus %}
 								<td class="confirm">Processed</td>
-								<td class="request"><a href="#" class="withdraw">Process</a></td>
+								<!-- <td class="request"><a href="#" class="withdraw">Process</a></td> -->
 							{% else %}
 								<td class="confirm" id="{{request.pk}}status">Pending</td>
-								<td class="request"><a href="#" data-pk="{{request.pk}}" class="withdraw active processbut" id="{{request.pk}}">Process</a></td>
+								<!-- <td class="request"><a href="#" data-pk="{{request.pk}}" class="withdraw active processbut" id="{{request.pk}}">Process</a></td> -->
 							{% endif %}			
 						</tr>
 					{% endfor %}
 				</table>
 			{% else %}
-				<p>No request made yet</p>
+				<h4>No request made yet</h4>
 			{% endif %}
 		</div>
 	</div>

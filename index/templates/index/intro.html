@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
+	<style type="text/css">
+		#data{
+			background: white;
+			position: fixed;
+			width: 100%;
+		}
+		.dropimg:hover{
+			cursor: pointer;
+		}
+	</style>
+	<nav class="navbar">
+		<span class="logo">Jim Net</span>
+		{% if user.is_authenticated %}
+			<span id="full">
+				<a href="/signout" class="loginA">Logout</a>
+				<a href="/paymenthistory" class="loginA">Payment History</a>
+				<a href="/dashboard" class="loginA">Home</a>
+				<a href="/profile" class="loginA">{{user.username}}'s Profile</a>
+			</span>
+
+			<span class="hide dropcontent" id="half">
+				<img src="{% static 'index/img/but.png' %}" class="dropimg">
+
+				<div class="hide" id="data">
+					<a href="/signout" class="navtag">Logout</a>
+					<a href="/paymenthistory" class="navtag">Payment History</a>
+					<a href="/profile" class="navtag">{{user.username}}'s Profile</a>
+					<a href="/dashboard" class="navtag">Home</a>
+				</div>
+			</span>
+		{% else %}
+			<a href="/signin" class="loginA">Login</a>
+			<a href="/signup" class="loginA">Register</a>
+		{% endif %}
+	</nav>
+	
+</head>
+<body class="dashbody">
+	<ul id="messagelist">
+		<p id="reactmessage" class="error hide"></p>
+		{% if messages %}
+			{% for message in messages %}
+				<li id="message" {% if message.tags %} class="{{message.tags}}" {% endif %}>
+					{{message}}
+				</li>
+			{% endfor %}
+		{% endif %}
+	</ul>
+	{% if user.is_authenticated %}
+		<div class="right">
+			<br>
+			<h4 class="alignleft" style="margin-right: 20px;">Balance: #{{user.balance}}; Network: {{user.network}}</h4>
+			<form class="withform" onsubmit="return false;">
+				{% csrf_token %}
+				<label style="color: black;">Withdraw all</label>
+
+				<input type="checkbox" id="check">
+				<input type="submit" value="Withdraw" data-amount="{{user.balance}}" class="withsubmit pointer withdraw" id="withbut">
+			</form>
+		</div>
+		<br>
+		<br>
+		<div class="withdrawcontainer hide">
+
+			<form class="withdrawform" method="post" action="/withdraw/">
+				{% csrf_token %}
+				<img src="{% static 'index/img/close.png' %}" class="closeimg2">
+				<h2>Request Withdraw</h2>
+				<br>
+				<label style="color: black;">Amount: </label>
+				<input type="number" name="amount" value="" max="{{user.balance}}" min="1000" required id="amountreq">
+
+				<h4 class="leftalign">Bank Name: {{user.bankname}}</h4>
+
+				<h4 class="leftalign">Account Name: {{user.accname}}</h4>
+
+				<h4 class="leftalign">Account Number: {{user.accno}}</h4>
+				<h4 style="text-align: left;"><label style="color: black;">Pincode: </label>
+				<input type="password" name="pincode" placeholder="Enter Pincode" required>
+
+				<input type="submit" value="Request" class="requestbut">
+				</h4>
+
+			</form>
+		</div>
+	{% endif %}
+		
+	<div class="introbody">
+		<!-- Introduction to JimNet -->
+		<h3 class="stayleft">JimNet</h3>
+		<p class="introcontent">JimNet is a network marketing business platform own by Jimbola Nig company which deals with co-operate individuals. The company's purpose is to reduce unemployed rate in Nigeria through a systematic referral program to all our involve members. JimNet is here to be the interface between you and your wealth including your health.</p>
+
+		<h3 class="stayleft">OUR VISION</h3>
+		<p class="introcontent">Being the multi-capital company with the simplest strategy consisting and yielding the most rewarding benefit with a lesser amount of money.</p>
+
+		<h3 class="stayleft">OUR MISSION</h3>
+		<p class="introcontent">Empower, enrich, encourage, enlightene and develop individuals that are willing to eradicate poverty and ready to help others.</p>
+
+		<h3 class="stayleft">OUR CORE VALUE</h3>
+		<ul>
+			<li>Trust</li>
+			<li>Commitment</li>
+			<li>Teamwork</li>
+			<li>Honesty</li>
+			<li>Professionalism</li>
+			<li>Integrity</li>
+		</ul>
+		
+		<h3 class="stayleft">HOW DOES IT WORK</h3>
+		<p class="introcontent">JimNet is an online platform which create quick residual income earning within a short period of time, with the fact that all members create positive cash flow. The income earning directly depends on the size of the team you build, the more your team the more money you make.</p>
+
+		<h3 class="stayleft">WHY I RECOMMEND JIMNET</h3>
+		<ol>
+			<li>Low registration fee of #100</li>
+			<li>Two (2) platform ladder to wealth and health</li>
+			<li>The more team you build the more money you make</li>
+			<li>No selling or buying of product</li>
+		</ol>
+
+		<h3 class="stayleft">BENEFITS</h3>
+		<ol>
+			<li>Amazing cash benefit</li>
+			<li>Personal development</li>
+			<li>No financial risk</li>
+			<li>Make as much money as making your dreams</li>
+			<li>You will end up becoming the owner of your own business and your own boss</li>
+		</ol>
+
+
+		<h3 class="stayleft">MEMBER'S EARNING</h3>
+		<div class="dashcontainer">
+			<table>
+				<h3 class="stayleft">Stage 1</h3>
+				<tr class="heading">
+					<td class="confirm">Level</td>
+					<td class="confirm">Referral</td>
+					<td class="confirm">Earning</td>
+				</tr>
+
+				<tr class="heading">
+					<td class="confirm">1</td>
+					<td class="confirm">10</td>
+					<td class="confirm">#200</td>
+				</tr>
+				
+				<tr class="heading">
+					<td class="confirm">2</td>
+					<td class="confirm">100</td>
+					<td class="confirm">#1,000</td>
+				</tr>
+
+				<tr class="heading">
+					<td class="confirm">3</td>
+					<td class="confirm">1,000</td>
+					<td class="confirm">#10,000</td>
+				</tr>
+			</table>
+
+			<table>
+				<h3 class="stayleft">Stage 2</h3>
+				<tr class="heading">
+					<td class="confirm">Level</td>
+					<td class="confirm">Referral</td>
+					<td class="confirm">Earning</td>
+				</tr>
+
+				<tr class="heading">
+					<td class="confirm">4</td>
+					<td class="confirm">10,000</td>
+					<td class="confirm">#100,000</td>
+				</tr>
+				
+				<tr class="heading">
+					<td class="confirm">5</td>
+					<td class="confirm">100,000</td>
+					<td class="confirm">#1,000,000</td>
+				</tr>
+
+				<tr class="heading">
+					<td class="confirm">6</td>
+					<td class="confirm">1,000,000</td>
+					<td class="confirm">#5,000,000</td>
+				</tr>
+			</table>
+		</div>
+
+		<h3 class="stayleft">HOW DO I JOIN JIMNET</h3>
+		<p class="introcontent">To join the JimNet business platform you only need to fill the online form at <a href="/signup">Register</a> with a registration code which cost #100 only or contact the person who introduced you to the system. Then, start refering.</p>
+
+
+		<!-- Frequently asked questions -->
+		<h3 class="stayleft">FAQs</h3>
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="1" data-content="minus">+</button> <span class="faqtxt">How to register?</span>
+
+			<div class="hide" id="1">
+				<p class="introcontent">Purchase a registration code for #100 from one of JimNet vendors by calling any of the phone numbers below. Then fill the online form at <a href="/signup">Register</a></p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="4" data-content="minus">+</button> <span class="faqtxt">How can I get or buy registration code</span>
+
+			<div class="hide" id="4">
+				<p class="introcontent">Call: Adenike on 08177130670 or Frank on 08144268894 or Azeeb on 09028801958</p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="2" data-content="minus">+</button> <span class="faqtxt">What will I do to start earning after registration?</span>
+
+			<div class="hide" id="2">
+				<p class="introcontent">Introduce 10 ambitious people into the system to hit the first level, you have to get them registered into the platform using your username as sponsor/referral name in the registration form ( in exact letter case you use in your login or used in your registration form i.e John is different john ). Then when the 10 ambitious people introduced brings in another set of 10 ambitious people each, you will hit level 2, more earning, more progress and shorter distance between you and your dreams. </p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="3" data-content="minus">+</button> <span class="faqtxt">How much is the registration fee?</span>
+
+			<div class="hide" id="3">
+				<p class="introcontent">The total cost for registering an individual into the system is #100 which is for the registration code.</p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="5" data-content="minus">+</button> <span class="faqtxt">How many people do I refer?</span>
+
+			<div class="hide" id="5">
+				<p class="introcontent">You need to refer 10 ambitious people to hit level 1 and earn #200, then when your 10 people refers their own 10 each, you hit level 2 then get to make your first withdraw and so on.</p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="12" data-content="minus">+</button> <span class="faqtxt">Can I have a multiple account?</span>
+
+			<div class="hide" id="12">
+				<p class="introcontent">Yes, but you will later need a unique representative for the Adventurous Stage.</p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="8" data-content="minus">+</button> <span class="faqtxt">How will I withdraw my money?</span>
+
+			<div class="hide" id="8">
+				<p class="introcontent">Use the withdraw button on your home/dashboard page. Note: The minimum amount that can be withdrawn is #1,000 and the maximum is #5,000,000. Bank details must be provided in your profile page and a correct pincode choosen during registration must be provided in your withdraw form.</p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="10" data-content="minus">+</button> <span class="faqtxt">What day is the withdrawing day?</span>
+
+			<div class="hide" id="10">
+				<p class="introcontent">Withdraw requests is accepted anytime but payment is done on Thursdays.</p>
+			</div>
+		</div>
+
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="6" data-content="minus">+</button> <span class="faqtxt">How much is the minimum withdraw amount?</span>
+
+			<div class="hide" id="6">
+				<p class="introcontent">The minimum amount you can withdraw is #1,000 and the maximum is #5,000,000.</p>
+			</div>
+		</div>
+
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="7" data-content="minus">+</button> <span class="faqtxt">I forgot my password how can I reset it?</span>
+
+			<div class="hide" id="7">
+				<p class="introcontent">Click the forget password button in the <a href="/signin">Login</a> page, enter your username in correct letter case, click on 'Reset' then check your mail.</p>
+			</div>
+		</div>
+	</div>
+
+    <footer>
+    	<div style="margin: 10px auto;">
+	    	<div class="left footcontainer">
+	    		<h3 class="white">To Purchase Registration code </h3>
+	    		<h4 class="white">Call:</h4>
+	    		<h5 class="white footcontent">Adenike on 08177130670</h5>
+	    		<h5 class="white footcontent">Frank on 08144268894</h5>
+	    		<h5 class="white footcontent">Azeeb on 09028801958</h5>
+	    	</div>
+	    	<div class="left footcontainer">
+	    		<h3 class="white">For more details</h3>
+	    		<h4 class="white">Call:</h4>
+	    		<h5 class="white footcontent">+2348183418725</h5>
+	    		<h5 class="white footcontent">+2348185502574</h5>
+	    		<h5 class="white footcontent">+2348184013127</h5>
+	    	</div>
+	    	<div class="left footcontainer">
+	    		<h3 class="white">For complains</h3>
+	    		<h4 class="white">Call:</h4>
+	    		<h5 class="white footcontent">+2348183418725</h5>
+	    		<h5 class="white footcontent">+2348185502574</h5>
+	    		<h5 class="white footcontent">+2348184013127</h5>
+	    	</div>
+	    	<div class="left footcontainer">
+	    		<h3 class="white">For complains</h3>
+	    		<form action="/complain/" method="post">
+	    			{% csrf_token %}
+
+	    			{% if not user %}
+	    				<input type="email" name="email" placeholder="Enter your email address" required>
+	    			{% else %}
+	    				<input type="email" name="email" placeholder="Enter your email address" value="{{user.email}}" required>
+	    			{% endif %}
+	    			<input type="text" name="subject" placeholder="Complain subject" required>
+	    			<textarea name="body" placeholder="Write complains" required></textarea>
+	    			<input type="submit" value="Submit">
+	    		</form>
+	    	</div>
+    	</div>
+    	<p style="clear: both; color: white; font-family: arial; display: inline-flex;margin-top: 70px; margin-left: 20px; text-align: center;">Copyright &copy; Jimbola Nig. Company. All rights reserved</p>
+    </footer>
+</body>
+<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'index/js/js.js' %}"></script>
+
+<!-- <script type="text/javascript" src="{% static 'index/js/jsapi' %}"></script> -->
+ </html>

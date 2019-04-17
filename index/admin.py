@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import User, Sponsorship, Request, Complain
 
-# Register your models here.
+admin.site.register(User)
+admin.site.register(Sponsorship)
+admin.site.register(Request)
+admin.site.register(Complain)

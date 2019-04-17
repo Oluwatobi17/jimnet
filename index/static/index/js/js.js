@@ -15,7 +15,7 @@ $(document).ready(function(){
 			// $('.withform').attr('action', '/')
 			// $('.withform').attr('method', 'get')
 		}
-	})
+	});
 
 	$('#withbut').on('click', function(){
 		$('.withdrawcontainer').toggleClass('hide')
@@ -100,94 +100,28 @@ $(document).ready(function(){
 		})
 	})
 
-	// Handling admin process button process
-	$('.processbut').on('click', function(){
-		var id = $(this).data('pk')
-		$.ajax({
-			url: '/jimcontrol/admin/processrequest/'+id,
-			method: 'get',
-			success: function(data){
-				console.log('That was successful')
-				$('#'+id).removeClass('active').removeClass('processbut')
-				$('#'+id+'status').text('Processed')
-			},
-			error: function(err){
-				$('#reactmessage').removeClass('hide')
-				$('#reactmessage').text('An error occured!')
-			}
+	$('.infodrop2 .more').click(function(){
+
+		var drop = $(this).data('drop')
+		$('#'+drop).toggle(10, function(){
+
+			// if ($(this).data('plus')){
+			// 	$(this).text('+')
+			// }else{
+			// 	$(this).text('-')
+			// }
 		})
 	})
 
-	// Handling admin process button process
-	$('.staffprocessbut').on('click', function(){
-		var id = $(this).attr('id')
-		console.log('Id is ')
-		console.log(id)
-		$.ajax({
-			url: '/jimcontrol/staff/processrequest/'+id,
-			method: 'get',
-			success: function(data){
-				console.log('That was successful')
-				$('#'+id).removeClass('active').removeClass('processbut')
-				$('#'+id+'status').text('Processed')
-			},
-			error: function(err){
-				console.log(err)
-				$('#reactmessage').removeClass('hide')
-				$('#reactmessage').text('An error occured!')
-			}
-		})
-	})
-
-	$('#clearRequest').on('click', function(){
-		var id = $(this).data('job')
-		$.ajax({
-			url: '/jimcontrol/staff/clearrequests/'+id,
-			method: 'get',
-			success: function(data){
-				$('#'+id).removeClass('active').removeClass('processbut')
-				$('#'+id+'status').text('Processed')
-			},
-			error: function(err){
-				$('#reactmessage').removeClass('hide')
-				$('#reactmessage').text('An error occured!')
-			}
-		})
-	})
-
-	$('.actionbut').on('click', function(){
-		
-		var id = $(this).attr('id')
-		id = id.replace('sus', '')
-		var work = $(this).data('work')
-		if (work=='suspend'){
-			$.ajax({
-				url: '/jimcontrol/admin/suspendstaff/'+id,
-				method: 'get',
-				success: function(data){
-					$('#sus'+id).text('Allow')
-					$('#sus'+id).data('work', 'allow')
-				},
-				error: function(err){
-					$('#reactmessage').removeClass('hide')
-					$('#reactmessage').text('An error occured!')
-				}
-			})
-		}else{
-			$.ajax({
-				url: '/jimcontrol/admin/allowstaff/'+id,
-				method: 'get',
-				success: function(data){
-					$('#sus'+id).text('Suspend')
-					$('#sus'+id).data('work', 'suspend')
-				},
-				error: function(err){
-					$('#reactmessage').removeClass('hide')
-					$('#reactmessage').text('An error occured!')
-				}
-			})
+	$('form .changepass').on('click', function(){
+		var act = $(this).data('act')
+		if (act=='pin'){
+			$('.pin').addClass('hide')
+			$('.pass').removeClass('hide')
+		}else if (act=='pass'){
+			$('.pass').addClass('hide')
+			$('.pin').removeClass('hide')
 		}
-		
 	})
 
 })

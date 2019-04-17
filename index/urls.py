@@ -4,6 +4,7 @@ from . import views;
 
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
+	url(r'^signin/$', views.signin, name='signin'),
 	url(r'^signup/$', views.register, name='register'),
 	url(r'^api/usernames/$', views.Usernames.as_view(), name='usernames'),
 	url(r'^signout/$', views.logout, name='logout'),
@@ -13,6 +14,9 @@ urlpatterns = [
 	url(r'^editprofile/$', views.editprofile, name='editprofile'),
 	url(r'^paymenthistory/$', views.paymenthistory, name='paymenthistory'),
 	url(r'^forgetpass/$', views.forgetpass, name='forgetpass'),
+	url(r'^complain/$', views.complain, name='complain'),
+	url(r'^forgetpincode/$', views.forgetpincode, name='forgetpincode'),
+	
 ]
 
 

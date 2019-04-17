@@ -98,16 +98,13 @@
 	<!-- This is for level 1 -->
 	<script type='text/javascript'>
 		
-		var treeboy = {{treeboy | safe}}
-		console.log(treeboy)
-
 		google.load('visualization', '1', {packages:['orgchart']});  
 		google.setOnLoadCallback(drawChart);  
 		function drawChart() {  
 		 var data = new google.visualization.DataTable();  
 		 data.addColumn('string', 'Node');  
 		 data.addColumn('string', 'Parent');  
-		 data.addRows(treeboy);  
+		 data.addRows({{treeboy | safe}});  
 		 var chart = new google.visualization.OrgChart(document.getElementById('chart'));  
 		 chart.draw(data);  
 		}  

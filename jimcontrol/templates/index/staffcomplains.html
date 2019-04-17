@@ -1,0 +1,147 @@
+{% extends "index/adminbase.html" %}
+
+
+{% load static %}
+
+{% block content %}
+	<div class="dashbody fromleft">
+		{% if author == 'staff' %}
+			<div class="innernavpanel">
+				<a href="#" data-access="#mycomplains" class="innernav innernavshowactive">My complains</a>
+				<a href="#" data-access="#allcomplains" class="innernav">All Complains</a>
+			</div>
+		
+			<div class="innernavactive" id="mycomplains">
+				<h2>My Complains({{mycomplains | length}})</h2>
+				{% if mycomplains %}
+					{% for complain in mycomplains %}
+						<div class="infodrop">
+							
+							<div>
+								<!-- Info that always show -->
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<span class="dropfront">{{complain.subject}}</span>
+									</div>
+								</div>
+
+								<div class="sm-rol-2">
+									<div class="col-6">
+										{% if complain.msgstatus %}
+											<span class="dropfront" id="not{{complain.pk}}">Read</span>
+										{% else %}
+											<span class="dropfront" id="not{{complain.pk}}">Unread</span>
+										{% endif %}
+									</div>
+									<span class="right more" id="not{{complain.pk}}" data-drop="{{complain.pk}}{{complain.pk}}">More</span>
+								</div>
+								<!-- Info that show on click -->
+								<div class="hide" id="{{complain.pk}}{{complain.pk}}">
+									<br>
+									<div class="sm-rol-2">
+										<div class="col-6">
+											<span class="dropfront2">Email: {{complain.email}}</span>
+										</div>
+									</div>
+									<div class="sm-rol-2">
+										<div class="col-6">
+											<span class="dropfront2">Body: {{complain.body}}</span>
+										</div>
+									</div>
+									<br>
+									<br>
+									<div class="sm-rol-2">
+										<div class="col-6">
+											<span class="dropfront2">Staff: {{complain.staff.username}} ({{complain.staff.firstname}} {{complain.staff.lastname}})</span>
+										</div>
+									</div>
+									
+									<div class="sm-rol-2">
+										<div class="col-6">
+											<span class="dropfront2">Date: {{complain.date|date:"d, M, Y G:i"}}</span>
+										</div>
+									</div>
+
+									<br>
+									<br>
+									<div class="sm-rol-2">
+										<div class="col-6">
+											{% if complain.msgstatus %}
+												<a href="#" class="dropfront dropsuspend actionbut read" id="mark{{complain.pk}}" data-work="unread">Mark Unread</a>
+											{% else %}
+												<a href="#" class="dropfront dropsuspend actionbut read" id="mark{{complain.pk}}" data-work="read">Mark read</a>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+		{% endif %}
+		{% if author == 'staff' %}
+			<div class="hide" id="allcomplains">
+		{% else %}
+			<div class="innernavactive" id="allcomplains">
+		{% endif %}
+			<h2>Complains({{allcomplains | length}})</h2>
+			{% if allcomplains %}
+				{% for complain in allcomplains %}
+					<div class="infodrop">
+						
+						<div>
+							<!-- Info that always show -->
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront">{{complain.subject}}</span>
+								</div>
+							</div>
+
+							<div class="sm-rol-2">
+								<div class="col-6">
+									{% if complain.msgstatus %}
+										<span class="dropfront">Read</span>
+									{% else %}
+										<span class="dropfront">Unread</span>
+									{% endif %}
+								</div>
+								<span class="right more" data-drop="{{complain.pk}}">More</span>
+							</div>
+							<!-- Info that show on click -->
+							<div class="hide" id="{{complain.pk}}">
+								<br>
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<span class="dropfront2">Email: {{complain.email}}</span>
+									</div>
+								</div>
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<span class="dropfront2">Body: {{complain.body}}</span>
+									</div>
+								</div>
+								<br>
+								<br>
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<span class="dropfront2">Staff: {{complain.staff.username}} ({{complain.staff.firstname}} {{complain.staff.lastname}})</span>
+									</div>
+								</div>
+								
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<span class="dropfront2">Date: {{complain.date|date:"d, M, Y G:i"}}</span>
+									</div>
+								</div>
+
+								<br>
+								<br>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from .forms import AdminUserForm, StaffUserForm
 from django.contrib import messages
 from .models import AdminUser, Staff, Registrationcode
-from index.models import Request, User, Newrequest
+from index.models import Request, User, Newrequest, Complain
 import random;
+from django.core.mail import send_mail
+import django
 
 
 def createadmin(request):
@@ -23,7 +25,7 @@ def createadmin(request):
 				if len(AdminUser.objects.all())==0:
 
 					# Validating the pincode given
-					if request.POST['pincode']=='ladipo963':
+					if request.POST['pincode']=='ladipo753':
 						adminuser = form.save(commit=False)
 						username = form.cleaned_data['username']
 						password = form.cleaned_data['password']
@@ -35,10 +37,10 @@ def createadmin(request):
 						return redirect(adminrequests)
 					else:
 						messages.error(request, 'Wrong entry')
-						return redirect('/')
+						return redirect('/signin')
 				else:
 					# Ensuring the pincode given match an existing account for validation
-					if AdminUser.objects.filter(pincode=request.POST['pincode']):
+					if AdminUser.objects.filter(pincode=jimhash(request.POST['pincode'])):
 						adminuser = form.save(commit=False)
 						username = form.cleaned_data['username']
 						password = form.cleaned_data['password']
@@ -51,7 +53,7 @@ def createadmin(request):
 						return redirect(adminrequests)
 					else:
 						messages.error(request, 'Wrong entry')
-						return redirect('/')
+						return redirect('/signin')
 			else:
 				messages.error(request, 'Password choosen does not match')
 				return redirect(createadmin)
@@ -76,6 +78,9 @@ def staffsignin(request):
 		obj = Staff.objects.filter(username=username, password=password)
 		if obj:
 			if obj[0].status=='active':
+				staff = Staff.objects.get(username=username)
+				staff.lastlogin = django.utils.timezone.now()
+				staff.save()
 				request.session['staffuser'] = username
 				return redirect(staffrequests)
 			else:
@@ -87,7 +92,7 @@ def staffsignin(request):
 
 	else:
 		return render(request, 'index/stafflogin.html', {
-			'title': 'Staff: Jim Money Staff Sign in'
+			'title': 'Staff: Jim Net Staff Sign in'
 		})
 
 
@@ -122,7 +127,7 @@ def staffprofile(request):
 					staff.password = newpassword
 					staff.save()
 
-					messages.error(request, 'Password has been updated')
+					messages.success(request, 'Password has been updated')
 					return redirect(staffrequests)
 				else:
 					messages.error(request, 'Password 1 does not match password2')
@@ -144,13 +149,39 @@ def staffprofile(request):
 def staffmembers(request):
 	if request.session.has_key('staffuser'):
 		return render(request, 'index/members.html', {
-			'title': request.session['staffuser'] +': Jim Money Members Details',
+			'title': request.session['staffuser'] +': JimNet Members Details',
 			'author': 'staff',
 			'user': Staff.objects.get(username=request.session['staffuser']),
-			'members': User.objects.all().order_by('-totearning')
+			'members': User.objects.all().order_by('-totearning'),
+			'length': len(User.objects.all())-1
 		})
 	else:
 		return redirect(staffsignin)
+
+def staffcomplains(request):
+	if request.session.has_key('staffuser'):
+		staff = Staff.objects.get(username=request.session['staffuser'])
+		return render(request, 'index/staffcomplains.html', {
+			'title': request.session['staffuser'] +': JimNet Complains',
+			'author': 'staff',
+			'user': staff,
+			'allcomplains': Complain.objects.all().order_by('msgstatus'),
+			'mycomplains': Complain.objects.filter(staff=staff).order_by('msgstatus')
+		})
+	else:
+		return redirect(staffsignin)
+
+def admincomplains(request):
+	if request.session.has_key('adminuser'):
+		return render(request, 'index/staffcomplains.html', {
+			'title': 'Admin: JimNet Complains',
+			'author': 'admin',
+			'allcomplains': Complain.objects.all().order_by('msgstatus')
+		})
+	else:
+		return redirect(staffsignin)
+
+
 def staffsignout(request):
 	del request.session['staffuser']
 	return redirect(staffsignin)
@@ -167,16 +198,16 @@ def adminsignin(request):
 			return redirect(adminrequests)
 		else:
 			messages.error(request, 'Invalid login')
-			return redirect('/')
+			return redirect('/signin')
 	else:
 		return render(request, 'index/adminlogin.html', {
-			'title': 'Admin: Jim Money Admin Sign in'
+			'title': 'Admin: JimNet Admin Sign in'
 		})
 
 def adminrequests(request):
 	if request.session.has_key('adminuser'):
 		return render(request, 'index/adminrequests.html', {
-			'title': 'Admin: Jim Money Members Withdrawal Request',
+			'title': 'Admin: JimNet Members Withdrawal Request',
 			'author': 'admin',
 			'requests': Request.objects.all().order_by('-pk'),
 			'unapproved': Request.objects.filter(adminstatus=False).order_by('-pk')
@@ -202,14 +233,20 @@ def adminGeneratePin(request):
 	if request.session.has_key('adminuser'):
 		if request.method=='POST':
 			pincode = request.POST['pincode']
-			number = int(request.POST['number'])
+			number = request.POST['number']
+
+			if str(number).isalpha():
+				messages.error(request, 'Please enter a digit')
+				return redirect(adminGeneratePin)
+
+			number = int(number)
 			
 			if not pincode or not number:
 				messages.error(request, 'Please fill the require fields')
 				return redirect(adminGeneratePin)
 
 			admin = AdminUser.objects.get(username=request.session['adminuser'])
-			if pincode==admin.pincode:
+			if jimhash(pincode)==admin.pincode:
 				pins = [];
 				for i in range(number):
 					pin = regcode();
@@ -242,9 +279,10 @@ def adminGeneratePin(request):
 def adminmembers(request):
 	if request.session.has_key('adminuser'):
 		return render(request, 'index/members.html', {
-			'title': 'Admin: Jim Money Members Details',
+			'title': 'Admin: JimNet Members Details',
 			'author': 'admin',
-			'members': User.objects.all().order_by('-totearning')
+			'members': User.objects.all().order_by('-totearning'),
+			'length': len(User.objects.all())-1
 		})
 	else:
 		return redirect(adminsignin)
@@ -252,7 +290,7 @@ def adminmembers(request):
 def createstaff(request):
 	if request.session.has_key('adminuser'):
 		if request.method=='POST':
-			username = request.POST['username']
+			username = request.POST['username'].strip(' ')
 			usernameObj = Staff.objects.filter(username=username)
 
 			# Checking if the choosen username has been used
@@ -260,12 +298,16 @@ def createstaff(request):
 				messages.error(request, 'Username has been used')
 				return redirect(createstaff)
 
+			if not request.POST['password'].strip(' '):
+				messages.error(request, 'Please choose a password')
+				return redirect(createstaff)
+
 			# Checking password and password2 equality
 			if request.POST['password']==request.POST['password2']:
 				form = StaffUserForm(request.POST)
 				if form.is_valid():
 					staffuser = form.save(commit=False)
-					# staffuser.password = jimhash(request.POST['password'])
+					staffuser.lastlogin = django.utils.timezone.now()
 					staffuser.save()
 
 					request.session['staffuser'] = username
@@ -298,7 +340,7 @@ def deletestaff(request, pk):
 			messages.error(request, 'Staff does not exist')
 			return redirect(createstaff)
 	else:
-		return redirect('/')
+		return redirect('/signin')
 
 def updatejob(request, pk):
 	if request.session.has_key('adminuser'):
@@ -326,15 +368,15 @@ def updatejob(request, pk):
 def changepin(request):
 	if request.session.has_key('adminuser'):
 		if request.method=='POST':
-			currentpin = request.POST['currentpincode']
-			newpin = request.POST['newpin']
-			newpin2 = request.POST['newpin2']
+			currentpin = request.POST['currentpincode'].strip(' ')
+			newpin = request.POST['newpin'].strip(' ')
+			newpin2 = request.POST['newpin2'].strip(' ')
 
-			if currentpin or newpin:
+			if currentpin and newpin:
 				if newpin==newpin2:
 					admin = AdminUser.objects.get(username=request.session['adminuser'])
-					if currentpin==admin.pincode:
-						admin.pincode = newpin
+					if jimhash(currentpin)==admin.pincode:
+						admin.pincode = jimhash(newpin)
 						admin.save()
 
 						messages.success(request, 'Pincode has been changed')
@@ -348,9 +390,83 @@ def changepin(request):
 			else:
 				messages.error(request, 'Please fill all the fields')
 				return redirect(adminGeneratePin)
-		return redirect('/')
+		return redirect('/signin')
 	else:
 		return redirect(adminGeneratePin)
+
+def changepassword(request):
+	if request.session.has_key('adminuser'):
+		if request.method=='POST':
+			currentpassword = request.POST['currentpassword'].strip(' ')
+			newpassword = request.POST['newpassword'].strip(' ')
+			newpassword2 = request.POST['newpassword2'].strip(' ')
+
+			if currentpassword and newpassword:
+				if newpassword==newpassword2:
+					admin = AdminUser.objects.get(username=request.session['adminuser'])
+					if jimhash(currentpassword)==admin.password:
+						admin.password = jimhash(newpassword)
+						admin.save()
+
+						messages.success(request, 'Password has been changed')
+						return redirect(adminGeneratePin)
+					else:
+						messages.error(request, 'Wrong password')
+						return redirect(adminGeneratePin)
+				else:
+					messages.error(request, 'Password 1 does not match password 2')
+					return redirect(adminGeneratePin)
+			else:
+				messages.error(request, 'Please fill all the fields')
+				return redirect(adminGeneratePin)
+		return redirect('/signin')
+	else:
+		return redirect(adminGeneratePin)
+
+def forgetpass(request):
+
+	username = request.POST['username']
+	if username:
+		usernameObj = AdminUser.objects.filter(username=username)
+		if usernameObj:
+			newpassword = str(random.randint(300000,300000000))
+			user = AdminUser.objects.get(username=username)
+			user.password = jimhash(newpassword)
+			user.save()
+
+			message = 'Hello! Your new password is '+newpassword+'\n'+'Please ignore this message if you did not try to reset your password from JimNet'
+			res = send_mail("JimNet password reset", message, "ibdac2000@gmail.com",[user.email])
+			if res==1:
+				messages.success(request, 'A mail has been set to your email box')
+				return redirect(adminsignin)
+			else:
+				messages.error(request, 'An error occured while processing your request')
+				return redirect(adminsignin)
+		else:
+			messages.error(request, 'Username does not exist')
+			return redirect('/signin')
+	else:
+		messages.error(request, 'Please fill the field')
+		return redirect(adminsignin)
+
+def resetpincode(request):
+	if request.session.has_key('adminuser'):
+		newpincode = str(random.randint(300000,300000000))
+		user = AdminUser.objects.get(username=request.session['adminuser'])
+		user.pincode = jimhash(newpincode)
+		user.save();
+
+		message = 'Hello! Your new pincode is '+newpincode+'\n'+'Please ignore this message if you did not try to reset your pincode on JimNet'
+		res = send_mail("JimNet pincode reset", message, "ibdac2000@gmail.com",[user.email])
+		if res==1:
+			messages.success(request, 'A mail has been set to your email box')
+			return redirect(adminGeneratePin)
+		else:
+			messages.error(request, 'An error occured while processing your request')
+			return redirect(adminsignin)
+		return redirect(adminrequests)
+	else:
+		return redirect(adminsignin)
 
 
 def adminsignout(request):
@@ -358,7 +474,7 @@ def adminsignout(request):
 		del request.session['adminuser']
 		return redirect(adminrequests)
 	else:
-		return redirect('/')
+		return redirect('/signin')
 
 
 # Password hasher
@@ -408,7 +524,7 @@ def jimhash(value):
 		if i.isalpha() or i.isdigit():
 			val = jimkey[i]
 			newvalue = newvalue.replace(i, val)
-	return newvalue
+	return str(newvalue)
 
 # Registration code generator
 def regcode():

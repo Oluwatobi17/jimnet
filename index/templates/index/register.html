@@ -8,7 +8,7 @@
 	<nav class="navbar">
 		<span class="logo">Jim Net</span>
 
-		<a href="/" class="loginA">Login</a>
+		<a href="/signin" class="loginA">Login</a>
 		<a href="/signup" class="loginA">Register</a>
 
 	</nav>
@@ -116,5 +116,46 @@
 		</form>
 
 	</div>
+	<footer>
+    	<div style="margin: 10px auto;">
+	    	<div class="left footcontainer">
+	    		<h3 class="white">To Purchase Registration code </h3>
+	    		<h4 class="white">Call:</h4>
+	    		<h5 class="white footcontent">Adenike on 08177130670</h5>
+	    		<h5 class="white footcontent">Frank on 08144268894</h5>
+	    		<h5 class="white footcontent">Azeeb on 09028801958</h5>
+	    	</div>
+	    	<div class="left footcontainer">
+	    		<h3 class="white">For more details</h3>
+	    		<h4 class="white">Call:</h4>
+	    		<h5 class="white footcontent">+2348183418725</h5>
+	    		<h5 class="white footcontent">+2348185502574</h5>
+	    		<h5 class="white footcontent">+2348184013127</h5>
+	    	</div>
+	    	<div class="left footcontainer">
+	    		<h3 class="white">For complains</h3>
+	    		<h4 class="white">Call:</h4>
+	    		<h5 class="white footcontent">+2348183418725</h5>
+	    		<h5 class="white footcontent">+2348185502574</h5>
+	    		<h5 class="white footcontent">+2348184013127</h5>
+	    	</div>
+	    	<div class="left footcontainer">
+	    		<h3 class="white">For complains</h3>
+	    		<form action="/complain/" method="post">
+	    			{% csrf_token %}
+
+	    			{% if not user %}
+	    				<input type="email" name="email" placeholder="Enter your email address" required>
+	    			{% else %}
+	    				<input type="email" name="email" placeholder="Enter your email address" value="{{user.email}}" required>
+	    			{% endif %}
+	    			<input type="text" name="subject" placeholder="Complain subject" required>
+	    			<textarea name="body" placeholder="Write complains" required></textarea>
+	    			<input type="submit" value="Submit">
+	    		</form>
+	    	</div>
+    	</div>
+    	<p style="clear: both; color: white; font-family: arial; display: inline-flex;margin-top: 70px; margin-left: 20px; text-align: center;">Copyright &copy; Jimbola Nig. Company. All rights reserved</p>
+    </footer>
 </body>
 </html>

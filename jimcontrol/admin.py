@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import AdminUser, Staff, Registrationcode
 
-# Register your models here.
+admin.site.register(AdminUser)
+admin.site.register(Staff)
+admin.site.register(Registrationcode)

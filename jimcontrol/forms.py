@@ -7,7 +7,7 @@ class AdminUserForm(forms.ModelForm):
 
 	class Meta:
 		model = AdminUser
-		fields = ['firstname', 'lastname', 'username','password']
+		fields = ['firstname', 'lastname', 'username','password', 'email']
 
 
 class StaffUserForm(forms.ModelForm):

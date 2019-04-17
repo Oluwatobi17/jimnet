@@ -18,33 +18,33 @@
 				<div class="lg-rol">
 					<div class="col-6-lg">
 						<label>Username</label>
-						<input type="text" name="username" placeholder="Choose Username">
+						<input type="text" name="username" placeholder="Choose Username" required>
 					</div>
 				</div>
 				<div class="rol-1">
 					<div class="sm-rol-1">
 						<div class="col-5">
 							<label>First Name</label>
-							<input type="text" name="firstname" placeholder="Enter First Name">
+							<input type="text" name="firstname" placeholder="Enter First Name" required>
 						</div>
 					</div>
 
 					<div class="sm-rol-2">
 						<div class="col-6">
 							<label>Surname</label>
-							<input type="text" name="lastname" placeholder="Enter Surname">
+							<input type="text" name="lastname" placeholder="Enter Surname" required>
 						</div>
 					</div>
 					<div class="sm-rol-2">
 						<div class="col-6">
 							<label>Password</label>
-							<input type="password" name="password" placeholder="Choose Password">
+							<input type="password" name="password" placeholder="Choose Password" required>
 						</div>
 					</div>
 					<div class="sm-rol-2">
 						<div class="col-6">
 							<label>Confirm</label>
-							<input type="password" name="password2" placeholder="Confirm Password">
+							<input type="password" name="password2" placeholder="Confirm Password" required>
 						</div>
 					</div>
 				</div>
@@ -117,7 +117,7 @@
 										{% if staff.status == 'active' %}
 											<a href="#" class="dropfront dropsuspend actionbut" id="sus{{staff.pk}}" data-work="suspend">Suspend</a>
 										{% else %}
-											<a href="#" class="dropfront dropsuspend actionbut" id="sus{{staff.pk}}" data-work="suspend">Allow</a>
+											<a href="#" class="dropfront dropsuspend actionbut" id="sus{{staff.pk}}" data-work="allow">Allow</a>
 										{% endif %}
 									</div>
 								</div>
@@ -130,7 +130,7 @@
 
 								<div class="sm-rol-2" style="margin-top: 30px;">
 									<div class="col-6">
-										<span class="dropfront dropbottom">Last Login: 28th of March, 2019 06:19pm</span>
+										<span class="dropfront dropbottom">Last Login: {{staff.lastlogin|date:"d, M, Y G:i"}}</span>
 									</div>
 								</div>
 							</div>
