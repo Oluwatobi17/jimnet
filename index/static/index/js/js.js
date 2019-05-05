@@ -56,14 +56,14 @@ $(document).ready(function(){
 	})
 
 	setInterval(function(){
-		if($('.navbar').width() < 711){
+		if($('.navbar').width() < 805){
 			$('.navbar #half').removeClass('hide')
 			$('.navbar #full').addClass('hide')
 		}else{
 			$('.navbar #full').removeClass('hide')
 			$('.navbar #half').addClass('hide')
 		}
-	}, 1000)
+	}, 100)
 
 
 	// Handle nav toggel

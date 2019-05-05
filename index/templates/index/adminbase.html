@@ -4,6 +4,7 @@
 	<title>{{title}}</title>
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
+	<link href="{% static 'index/img/favicon.ico' %}" rel="icon" type="image/x-icon">
 	<style type="text/css">
 		#data{
 			background: white;
@@ -16,12 +17,12 @@
 	</style>
 
 	<nav class="navbar">
-		<span class="logo">Jim Net</span>
+		<a href="/"><span class="logo">Jim Net</span></a>
 		{% if author == 'admin' %}
 			<span id="full">
 				<a href="/jimcontrol/admin/signout" class="loginA">Logout</a>
 				<a href="/jimcontrol/admin/members" class="loginA">Members</a>
-				<a href="/jimcontrol/admin/complains" class="loginA">Complains</a>
+				<a href="/jimcontrol/admin/complains" class="loginA">Messages</a>
 				<a href="/jimcontrol/admin/pin" class="loginA">Pin</a>
 				<a href="/jimcontrol/admin/createstaff" class="loginA">Create Staff</a>
 				<a href="/jimcontrol/admin/requests" class="loginA">Requests</a>
@@ -33,7 +34,7 @@
 				<div class="hide" id="data">
 					<a href="/jimcontrol/admin/signout" class="navtag">Logout</a>
 					<a href="/jimcontrol/admin/members" class="navtag">Members</a>
-					<a href="/jimcontrol/admin/complains" class="navtag">Complains</a>
+					<a href="/jimcontrol/admin/complains" class="navtag">Messages</a>
 					<a href="/jimcontrol/admin/pin" class="navtag">Pin</a>
 					<a href="/jimcontrol/admin/createstaff" class="navtag">Create Staff</a>
 					<a href="/jimcontrol/admin/requests" class="navtag">Requests</a>

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import AdminUserForm, StaffUserForm
 from django.contrib import messages
 from .models import AdminUser, Staff, Registrationcode
-from index.models import Request, User, Newrequest, Complain
+from index.models import Request, User, Newrequest, Complain, Notification
 import random;
 from django.core.mail import send_mail
 import django
@@ -33,7 +33,7 @@ def createadmin(request):
 
 						adminuser.save()
 						request.session['adminuser'] = username
-						messages.success(request, 'Registration successfull')
+						messages.success(request, 'Registration successful')
 						return redirect(adminrequests)
 					else:
 						messages.error(request, 'Wrong entry')
@@ -48,7 +48,7 @@ def createadmin(request):
 
 						adminuser.save()
 						request.session['adminuser'] = username
-						messages.success(request, 'Registration successfull')
+						messages.success(request, 'Registration successful')
 
 						return redirect(adminrequests)
 					else:
@@ -104,7 +104,7 @@ def staffrequests(request):
 			'author': 'staff',
 			'user': staffobj,
 			'requests': Request.objects.filter(level=staffobj.job).order_by('-pk'),
-			'newrequest': Newrequest.objects.filter(level=staffobj.job)
+			'newrequest': Newrequest.objects.filter(level=staffobj.job).order_by('bankname')
 		})
 	else:
 		messages.error(request, 'Please Sign in')
@@ -173,13 +173,40 @@ def staffcomplains(request):
 
 def admincomplains(request):
 	if request.session.has_key('adminuser'):
-		return render(request, 'index/staffcomplains.html', {
+		return render(request, 'index/adminmessage.html', {
 			'title': 'Admin: JimNet Complains',
 			'author': 'admin',
-			'allcomplains': Complain.objects.all().order_by('msgstatus')
+			'allcomplains': Complain.objects.all().order_by('msgstatus'),
+			'notifications': Notification.objects.all().order_by('-date')
 		})
 	else:
-		return redirect(staffsignin)
+		return redirect(adminsignin)
+
+def alertAllUserForNewNote():
+	for user in User.objects.all():
+		user.note = True;
+		user.save()
+
+
+def sendmessage(request):
+	if request.session.has_key('adminuser'):
+		if request.method =='POST':
+			message = request.POST['message'].strip(' ')
+			if message:
+				note = Notification(message=message)
+				note.save();
+				alertAllUserForNewNote();
+
+				messages.success(request, 'Message has been sent')
+				return redirect(admincomplains)
+
+			else:
+				messages.error(request, 'Please enter a message')
+				return redirect(admincomplains)
+
+	
+
+	return redirect(adminsignin)
 
 
 def staffsignout(request):

@@ -17,7 +17,7 @@ class User(AbstractUser):
 	accstatus = models.CharField(max_length=250, default='active')
 	level = models.IntegerField(default=0)
 	dateofmembership = models.DateTimeField(default=django.utils.timezone.now())
-	# dateofmembership = models.DateTimeField(default=datetime.datetime.now())
+	note = models.BooleanField(default=False) # for notifying new message from admin
 
 	def __str__(self):
 		return self.username
@@ -60,3 +60,8 @@ class Complain(models.Model):
 
 	def __str__(self):
 		return self.subject+'-'+self.staff.username
+
+
+class Notification(models.Model):
+	message = models.TextField();
+	date = models.DateTimeField(auto_now=True);

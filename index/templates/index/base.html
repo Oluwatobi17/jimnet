@@ -4,6 +4,7 @@
 	<title>{{title}}</title>
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
+	<link href="{% static 'index/img/favicon.ico' %}" rel="icon" type="image/x-icon">
 	<style type="text/css">
 		#data{
 			background: white;
@@ -15,7 +16,12 @@
 		}
 	</style>
 	<nav class="navbar">
-		<span class="logo">Jim Net</span>
+		<a href="/"><span class="logo">Jim Net</span></a>
+		<form method="post" action="/getContact/">
+			{% csrf_token %}
+			<input type="input" name="users" placeholder="Search for members with username">
+			
+		</form>
 
 		<span id="full">
 			<a href="/signout" class="loginA">Logout</a>
@@ -129,9 +135,56 @@
     	</div>
     	<p style="clear: both; color: white; font-family: arial; display: inline-flex;margin-top: 70px; margin-left: 20px; text-align: center;">Copyright &copy; Jimbola Nig. Company. All rights reserved</p>
     </footer>
+
+    <div class="not_panel">
+		<div class="title_region">
+			<h4 class="not_title">Notifications {% if user.note %}<img src="{% static 'index/img/newnote.png' %}" class="notImg"> {% else %}<img src="{% static 'index/img/nonote.png' %}" class="notImg">{% endif %}</h4>
+		</div>
+		<div id="not_content" class="hide">
+			{% if notification %}
+		    	<ul>
+		    		{% for not in notification %}
+			    		<a href="#note">
+				    		<li style="list-style-image: url('/static/index/img/notification/{{not.img}}')">
+				    			 {{not.message}} <br><span class="small"> {{not.date}}</span>
+				    		</li>
+			    		</a>
+		    		{% endfor %}
+		    	</ul>
+	    	{% else %}
+	    		<h4>No notification</h4>
+	    	{% endif %}
+	    	<!-- <a href="/notification" class="but_expand"><span class="seemore">See More</span></a> -->
+    	</div>
+    </div>
 </body>
 <script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
 <script type="text/javascript" src="{% static 'index/js/js.js' %}"></script>
+<script type="text/javascript">
+	$('document').ready(function(){
+		// Script to hide the message render after 5 seconds
+		setTimeout(function(){
+			$('#messagelist').css('display', 'none')
+		}, 5000)
+
+		// Script to toggle the notification panel
+		$('.not_panel .title_region').on('click', function(){
+			$('#not_content').toggleClass('hide')
+		})
+
+
+		$('.title_region').on('click', function(){
+			if( $('.not_title img').attr('src')=='/static/index/img/newnote.png' ){
+				$.ajax({
+					url: '/checknotification',
+					success: function(data){
+						$('.notImg').attr('src', '/static/index/img/nonote.png')	
+					}
+				})
+			}
+		})
+	})
+</script>
 
 <!-- <script type="text/javascript" src="{% static 'index/js/jsapi' %}"></script> -->
  </html>

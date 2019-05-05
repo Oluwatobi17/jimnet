@@ -11,6 +11,10 @@
 		<form method="post" action="/editprofile/">
 			{% csrf_token %}
 			<h2 class="userhead">{{user.username}}</h2>
+			<br>
+			<label>Sponsor: {{user.sponsor}}</label>
+			
+
 			<div class="rol-1">
 				<span class="sub-topic">Personal Information</span>
 

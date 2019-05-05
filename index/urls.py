@@ -15,8 +15,9 @@ urlpatterns = [
 	url(r'^paymenthistory/$', views.paymenthistory, name='paymenthistory'),
 	url(r'^forgetpass/$', views.forgetpass, name='forgetpass'),
 	url(r'^complain/$', views.complain, name='complain'),
+	url(r'^getContact/$', views.getContact, name='getContact'),
 	url(r'^forgetpincode/$', views.forgetpincode, name='forgetpincode'),
-	
+	url(r'^checknotification/$', views.Checknotification.as_view(), name='checknotification'),
 ]
 
 

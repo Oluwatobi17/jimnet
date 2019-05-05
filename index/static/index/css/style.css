@@ -6,7 +6,6 @@ img{
 }
 a{
 	text-decoration: none;
-
 	color: #1e90ff;
 }
 .navbar{
@@ -22,7 +21,7 @@ a{
 	font-size: 25px;
 	color: white;
 	display: inline-flex;
-	margin: 10px 30px;
+	margin: 10px 20px;
 	font-weight: bolder;
 }
 .dropimg{
@@ -43,8 +42,8 @@ a{
 	font-family: arial;
 }*/
 .loginA{
-	padding: 10px;
-	margin: 10px 8px;
+	padding: 10px 5px;
+	margin: 10px 5px;
 	float: right;
 	color: white;
 	font-weight: bolder;
@@ -128,6 +127,7 @@ label{
 	padding: 0px 10px;
 	border: 0px;
 	border-bottom: 2px solid green;
+	outline: 0;
 	background-color: black;
 	color: white;
 }
@@ -137,6 +137,7 @@ label{
 	padding: 0px 10px;
 	border: 0px;
 	border-bottom: 2px solid green;
+	outline: 0;
 	background-color: black;
 	color: white;
 }
@@ -197,6 +198,7 @@ label{
 	border-bottom: 2px solid green;
 	background: black;
 	color: white;
+	outline: 0;
 }
 .col-6 label{
 	margin: 5px 12px 5px 0px;
@@ -208,6 +210,7 @@ label{
 	border-bottom: 2px solid green;
 	background: black;
 	color: white;
+	outline: 0;
 }
 .col-6{
 	-ms-flex: 0 0 50%;
@@ -238,6 +241,7 @@ label{
 	background: black;
 	color: white;
 	width: 100%;
+	outline: 0;
 }
 .col-5{
 	-ms-flex: 0 0 100%;
@@ -355,6 +359,9 @@ td a{
 	opacity: 1;
 	cursor: pointer;
 }
+.activing{
+	opacity: 1;
+}
 .active:hover{
 	cursor: pointer;
 }
@@ -385,11 +392,11 @@ td a{
 .hide{
 	display: none;
 }
-.chart{
+#chart{
 	margin: 20px auto;
 	background: white;
-	top: 9%;
-	left: 3%;
+	overflow: scroll;
+	width: 100%;
 }
 .closeimg{
 	width: 25px;
@@ -438,6 +445,7 @@ td a{
 .generateform input{
 	background: none;
 	color: black;
+	outline: 0;
 }
 .gensubmit{
 	border: 1px solid green;
@@ -712,4 +720,193 @@ footer{
 }
 footer p{
 	font-size: 13px;
+}
+.not_panel{
+	position: fixed;
+	right: 100px;
+	bottom: 10px;
+	background: white;
+	width: 250px;
+	opacity: 1;
+	padding: 10px;
+	text-align: center;
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+	max-height: 300px;
+	overflow-y: scroll;
+}
+.title_region{
+	cursor: pointer;
+}
+.not_title{
+	border-bottom: 1px solid #ccc;
+	font-family: arial;
+	color: black;
+	margin-bottom: 10px;
+	padding: 4px 8px;
+}
+.not_panel ul{
+	/*overflow: auto;*/ 
+	padding-left: 30px;
+}
+.not_panel ul li{
+	background: #f5f5f5;
+	margin-bottom: 2px;
+	border-radius: 3px;
+	margin-left: 2px;
+	padding: 8px;
+}
+.not_panel ul a li{
+	text-align: left;
+}
+.not_panel a{
+	color: black;
+}
+.small{
+	font-size: 12px;
+	color: #ccc;
+	text-align: left;
+}
+.messagingform{
+	margin: 10px auto;
+	width: 85%;
+}
+.messagingform textarea{
+	width: 100%;
+	display: block;
+	height: 150px;
+	font-family: arial;
+	padding: 10px;
+}
+.messagingform input{
+	font-family: arial;
+	color: white;
+	background: green;
+	padding: 10px;
+	border-radius: 5px;
+	margin-top: 10px;
+	border: 0px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.navbar form{
+	display: inline;
+	margin-right: 0px;
+}
+.navbar input{
+	outline: 0;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	height: 30px;
+	width: 30%;
+	margin-right: 0px;
+}
+.introimg{
+	width: 100%;
+	height: 150px;
+}
+.introslides{
+	width: 100%;
+	height: 520px;
+	overflow: hidden;
+	padding: 0px;
+}
+/* Slide image styling */
+/* Slideshow container */
+.slideshow-container {
+  margin: auto;
+  padding-bottom: 0px;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+  width: 99%;
+  height: 420px;
+}
+.slideimg3{
+	width: 100%;
+	height: 420px;
+	margin: 0px;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  background: green;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 15px;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 4px 12px;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 10px 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
 }

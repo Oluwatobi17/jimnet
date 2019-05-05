@@ -4,9 +4,9 @@
 	<title>{{title}}</title>
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
-
+	<link href="{% static 'index/img/favicon.ico' %}" rel="icon" type="image/x-icon">
 	<nav class="navbar">
-		<span class="logo">Jim Net</span>
+		<a href="/"><span class="logo">Jim Net</span></a>
 
 		<a href="/signin" class="loginA">Login</a>
 		<a href="/signup" class="loginA">Register</a>

@@ -24,6 +24,7 @@ urlpatterns = [
 	url(r'^admin/members/$', views.adminmembers, name='adminmembers'),
 	url(r'^admin/signout/$', views.adminsignout, name='adminsignout'),
 	url(r'^admin/createstaff/$', views.createstaff, name='createstaff'),
+	url(r'^admin/sendmessage/$', views.sendmessage, name='sendmessage'),
 	url(r'^admin/complains/$', views.admincomplains, name='admincomplains'),
 	url(r'^admin/updatejob/(?P<pk>[0-9]+)/$', views.updatejob, name='updatejob'),
 	url(r'^admin/deletestaff/(?P<pk>[0-9]+)/$', views.deletestaff, name='deletestaff'),

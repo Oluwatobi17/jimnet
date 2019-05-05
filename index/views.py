@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_user
 from django.contrib.auth import logout as logout_user
-from .models import User, Sponsorship, Request, Newrequest, Complain
+from .models import User, Sponsorship, Request, Newrequest, Complain, Notification
 import django
 from jimcontrol.models import Staff, Registrationcode
 import random
@@ -26,12 +26,12 @@ from rest_framework.permissions import IsAuthenticated
 def index(request):
 	if request.user.is_authenticated:
 		return render(request, 'index/intro.html', {
-			'title': 'JimNet: Introduction to JimNet',
+			'title': 'Jimmoney: Introduction to Jimmoney',
 			'user': User.objects.get(username=request.user.username)
 		})
 	else:
 		return render(request, 'index/intro.html', {
-			'title': 'JimNet: Introduction to JimNet'
+			'title': 'Jimmoney: Introduction to Jimmoney'
 		})
 
 # login handler
@@ -59,18 +59,19 @@ def signin(request):
 	else:
 		logout_user(request)
 		return render(request, 'index/login.html', {
-			'title': 'JimNet Networking Business'
+			'title': 'Jimmoney Networking Business'
 		})
 
 def logout(request):
 	logout_user(request)
 	return redirect(signin)
 
+
 def dateback(referral):
 	if referral =='Jimmoney':
 		sponsorObj = User.objects.get(username='Jimmoney')
-		if sponsorObj.totearning < 5000000:
-			if sponsorObj.totearning >= 1000000:
+		if sponsorObj.network < 1000000:
+			if sponsorObj.network >= 100000:
 				sponsorObj.network += 1;
 				sponsorObj.balance += 5;
 				sponsorObj.totearning += 5;
@@ -82,43 +83,41 @@ def dateback(referral):
 				sponsorObj.totearning += 10;
 				sponsorObj.level = leveldeterminant(sponsorObj.username)
 				sponsorObj.save()
+		else:
+			sponsorObj.network += 1;
+			sponsorObj.save();
 
 		return;
 	else:
 		# Trying to pay the sponsor of the referal=referal
 		nextsponsorObj = Sponsorship.objects.get(member=referral)
 
+		# Grabbing the sponsor_object of the referal of the currently paid person
 		sponsorObj = User.objects.get(username=nextsponsorObj.sponsor.username)
 
-		if sponsorObj.totearning < 5000000:
-			if sponsorObj.totearning >= 1000000:
+		if sponsorObj.network < 1000000:
+			if sponsorObj.network >= 100000:
 				sponsorObj.network += 1;
 				sponsorObj.balance += 5;
 				sponsorObj.totearning += 5;
-				sponsorObj.level = leveldeterminant(nextsponsorObj.sponsor.username)
-				sponsorObj.save()
+				sponsorObj.level = leveldeterminant(sponsorObj.username)
+				
 			else:
 				sponsorObj.network += 1;
 				sponsorObj.balance += 10;
 				sponsorObj.totearning += 10;
-				sponsorObj.level = leveldeterminant(nextsponsorObj.sponsor.username)
-				sponsorObj.save()
+				sponsorObj.level = leveldeterminant(sponsorObj.username)
+			
+			sponsorObj.save()
+		else:
+			# this runs if the user has completed the levels i.e 1,000,000 referrals
+			sponsorObj.network += 1;
+			sponsorObj.save()
 
 		if nextsponsorObj.sponsor.username != 'Jimmoney':
 			dateback(nextsponsorObj.sponsor.username)
 		else:
 			return;
-
-	# newsponsorobj = User.objects.get(username=referral)
-	# newsponsorobj.network += 1;
-	# newsponsorobj.balance += 10;
-	# newsponsorobj.totearning += 10;
-	# newsponsorobj.level = leveldeterminant(referral)
-	# newsponsorobj.save()
-
-	# if newsponsorobj.sponsor.username != 'Jimmoney':
-		
-	# return True;
 
 def leveldeterminant(username):
 	user = User.objects.get(username=username)
@@ -232,38 +231,33 @@ def register(request):
 
 						sponsorObj = User.objects.get(username=referral)
 						if len(Sponsorship.objects.filter(sponsor=sponsorObj)) < 10:
-							user.sponsor = sponsorObj.username
+							user.sponsor = referral
 							user.save()
 
 							sponsorObj.network += 1;
 							sponsorObj.balance += 20;
 							sponsorObj.totearning += 20;
-							sponsorObj.level = leveldeterminant(referral)
-							sponsorObj.save()
 
 							# Creating new sponsorship
 							newSponsorship = Sponsorship(sponsor=sponsorObj, member=username)
 							newSponsorship.save()
 
 							# Updating the sponsor's level
-							sponsor = User.objects.get(username=referral)
-							sponsor.level = leveldeterminant(username)
-							sponsor.save()
+							sponsorObj.level = leveldeterminant(referral)
+							sponsorObj.save()
+
+							
+							# sponsor = User.objects.get(username=referral)
+							# sponsor.level = leveldeterminant(username)
+							# sponsor.save()
 
 							if sponsorObj.username != 'Jimmoney':
 								dateback(referral)
 
-							message = user.username+', I Welcome you to JimNet, the success interface. JimNet wish you all the best with your journey.'+'\n'+'Please ignore this message if you did not create an account with JimNet.'
-							res = send_mail("Welcome to JimNet", message, "ibdac2000@gmail.com",[user.email])
 							
 							messages.success(request, 'Registration successful. Welcome '+username)
 							return redirect(dashboard)
 						else:
-							# print('Level full')
-							# print(len(Sponsorship.objects.filter(sponsor=sponsorObj)))
-							# Change sponsor to the new checksmallsponsorship() returned value
-
-
 							# Getting the down side of the sponsor
 							nextsponsor = checksmallsponsorship( User.objects.get(username=referral) )
 							# print(nextsponsor)
@@ -280,9 +274,8 @@ def register(request):
 							newSponsorship = Sponsorship(sponsor=sponsorObj, member=username)
 							newSponsorship.save()
 
-							dateback(referral)
-							message = user.username+', I Welcome you to JimNet, the success interface. JimNet wish you all the best with your journey.'+'\n'+'Please ignore this message if you did not create an account with JimNet.'
-							res = send_mail("Welcome to JimNet", message, "ibdac2000@gmail.com",[user.email])
+							dateback(nextsponsor)
+							
 							messages.success(request, 'Registration successful. Welcome '+username)
 							return redirect(dashboard)
 
@@ -294,7 +287,7 @@ def register(request):
 	else:
 		logout_user(request)
 		return render(request, 'index/register.html', {
-			'title': 'Sign Up today to JimNet Networking Business'
+			'title': 'Sign Up today to Jimmoney Networking Business'
 		})
 
 tree = [] # the tree name holder
@@ -303,12 +296,13 @@ def dashboard(request):
 		user = User.objects.get(username=request.user.username)
 
 		mytree = treeboy(user)
-		global tree
+		global tree   #To specify that the variable is for the one used in treeboy function
 		tree = []
 		return render(request, 'index/home.html', {
-			'title': 'Dashboard: Welcome to JimNet',
+			'title': 'Dashboard: Welcome to Jimmoney',
 			'user': user,
-			'treeboy': mytree
+			'treeboy': mytree,
+			'notification': Notification.objects.all().order_by('-date')[:4]
 		})
 	else:
 		return redirect(signin)
@@ -325,9 +319,9 @@ def forgetpass(request):
 			user.save()
 			emailto = user.email
 
-			message = 'Hello! Your new password is '+newpassword+'\n'+'Change your password to your taste on your next login.'+'\n'+'Please ignore this message if you did not try to reset your password on JimNet.'
+			message = 'Hello! Your new password is '+newpassword+'\n'+'Change your password to your taste on your next login.'+'\n'+'Please ignore this message if you did not try to reset your password on Jimmoney.'
 
-			res = send_mail("JimNet password reset", message, "support@jimnet.com",[emailto])
+			res = send_mail("Jimmoney password reset", message, "support@Jimmoney.com",[emailto])
 			if res==1:
 				messages.success(request, 'A mail has been sent to your email')
 				return redirect(signin)
@@ -335,7 +329,7 @@ def forgetpass(request):
 				messages.error(request, 'An error occured while sending mail, Please try again')
 				return redirect(signin)
 		else:
-			messages.error(request, 'Username does not exist')
+			messages.error(request, 'Username does not exist, please check letter case.')
 			return redirect(signin)
 	else:
 		messages.error(request, 'Please fill the required field')
@@ -345,8 +339,9 @@ def forgetpass(request):
 def profile(request):
 	if request.user.is_authenticated:
 		return render(request, 'index/profile.html', {
-			'title': 'Profile: Welcome to JimNet',
-			'user': User.objects.get(username=request.user.username)
+			'title': 'Profile: Welcome to Jimmoney',
+			'user': User.objects.get(username=request.user.username),
+			'notification': Notification.objects.all().order_by('-date')[:4]
 		})
 	else:
 		messages.error(request, 'Please Sign in')
@@ -355,43 +350,15 @@ def profile(request):
 def paymenthistory(request):
 	if request.user.is_authenticated:
 		return render(request, 'index/paymenthistory.html', {
-			'title': 'Payment History: Welcome to JimNet',
+			'title': 'Payment History: Welcome to Jimmoney',
 			'user': User.objects.get(username=request.user.username),
+			'notification': Notification.objects.all().order_by('-date')[:4],
 			'history': Request.objects.filter(user=User.objects.get(username=request.user.username)).order_by('-date') 
 		})
 	else:
 		messages.error(request, 'Please Sign in')
 		return redirect(signin)
 
-# Withdraw all function
-# def withdrawall(request):
-# 	if request.method == 'POST':
-# 		if request.user.is_authenticated:
-# 			user = User.objects.get(username=request.user.username)
-
-# 			if user.balance > 999:
-# 				if user.bankname and user.accno and user.accno:
-# 					bal = user.balance
-# 					user.balance = 0;
-# 					user.save();
-
-# 					newrequest = Request(user=user, amount=bal)
-# 					newrequest.save();
-
-
-# 					messages.success(request, 'Request has been placed')
-# 					return redirect(dashboard)
-# 				else:
-# 					messages.error(request, 'Please edit your bank account details on your profile page')
-# 					return redirect(dashboard)
-# 			else:
-# 				messages.error(request, 'Amount must be up to #1,000')
-# 				return redirect(dashboard)
-# 		else:
-# 			messages.error(request, 'Please Sign in')
-# 			return redirect(signin)
-# 	else:
-# 		return redirect(signin)
 
 def withdraw(request):
 	if request.method == 'POST':
@@ -517,9 +484,14 @@ def editprofile(request):
 							messages.error(request, 'Pincode 1 does not match pincode 2')
 							return redirect(profile)
 
-					user.save()
-					messages.success(request, 'Details updated')
-					return redirect(profile)
+					# Ensuring its the account trying to change profile using password security
+					if user.check_password(currentpassword):
+						user.save()
+						messages.success(request, 'Details updated')
+						return redirect(profile)
+					else: 
+						messages.error(request, 'Please enter your current password before you have access to change profile.')
+						return redirect(profile)
 		else:
 			messages.error(request, 'Please Sign in')
 			return redirect(signin)
@@ -561,8 +533,8 @@ def forgetpincode(request):
 		user.pincode = newpincode
 		user.save()
 
-		message = 'Hello!, Your new pincode is '+newpincode+'\n'+'Please ignore this message if you did not try to reset payment pincode on JimNet.'
-		res = send_mail("JimNet pincode reset", message, "ibdac2000@gmail.com",[user.email])
+		message = 'Hello!, Your new pincode is '+newpincode+'\n'+'Please ignore this message if you did not try to reset payment pincode on Jimmoney.'
+		res = send_mail("Jimmoney pincode reset", message, "ibdac2000@gmail.com",[user.email])
 		
 		if res==1:
 			messages.success(request, 'A mail has been sent to you, please check to continue')
@@ -571,6 +543,35 @@ def forgetpincode(request):
 			messages.error(request, 'An error occured while processing')
 			return redirect(dashboard)
 
+	else:
+		messages.error(request, 'Please sign in')
+		return redirect(index)
+
+def getContact(request):
+	if request.user.is_authenticated:
+		if request.method=='POST':
+			users_obj = []
+			notfound = []
+			users = request.POST['users'].strip(' ').replace(' ', '');
+			users = users.split(',')
+			if users:
+				for user in users:
+					if User.objects.filter(username=user):
+						users_obj.append(User.objects.get(username=user))
+					else:
+						notfound.append(user)
+
+				return render(request, 'index/search.html',{
+					'title': 'Member search results',
+					'user': User.objects.get(username=request.user.username),
+					'users_obj': users_obj,
+					'notfound': notfound
+				})
+			else:
+				messages.error(request, 'No username was received')
+				return redirect(dashboard)
+		else:
+			return redirect(dashboard)
 	else:
 		messages.error(request, 'Please sign in')
 		return redirect(index)
@@ -688,3 +689,14 @@ class MarkComplain(APIView):
 				return Response(False)
 		else:
 			return Response(False)
+
+class Checknotification(APIView):
+	def get(self, request):
+		if request.user.is_authenticated:
+			user = User.objects.get(username=request.user.username)
+			user.note = False
+			user.save();
+
+			return Response(True);
+		else:
+			return Response(False);
