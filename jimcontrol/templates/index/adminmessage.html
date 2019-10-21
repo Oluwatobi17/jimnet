@@ -8,6 +8,7 @@
 			<div class="innernavpanel">
 				<a href="#" data-access="#allcomplains" class="innernav innernavshowactive">Complains</a>
 				<a href="#" data-access="#messages" class="innernav">Messages</a>
+				<a href="#" data-access="#alerts" class="innernav" id="alertnote">Notifications</a>
 			</div>
 		
 			<div class="innernavactive" id="allcomplains">
@@ -110,5 +111,51 @@
 				{% endfor %}
 			{% endif %}
 		</div>
+
+		<div class="hide" id="alerts">
+
+			<h2>Notifications({{alert | length}})</h2>
+			{% if alert %}
+				{% for alert in alert %}
+					
+					<div class="infodrop">
+						
+						<div>
+							<!-- Info that always show -->
+							<div class="col-6">
+								<span class="dropfront2">{{alert.message}}</span>
+							</div>
+							<div class="sm-rol-2 right">
+								<div class="col-6">
+									<span class="dropfront">{{alert.date}} {% if forloop.counter <= user.note %}<span>(New)</span>{% else %}<span>(Old)</span>{% endif %}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<h4>No notification yet</h4>
+			{% endif %}
+		</div>
 	</div>
+	<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			num = {{user.note}}
+			if(num){
+				$('#alertnote').on('click', function(){
+					$.ajax({
+						url: '/jimcontrol/admin/clearunreadalerts',
+						method: 'get',
+						success: function(){
+							num = 0
+						},
+						error: function(err){
+							console.log(err)
+						}
+					})
+				})
+			}
+		});
+	</script>
 {% endblock %}

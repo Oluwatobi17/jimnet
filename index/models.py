@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from jimcontrol.models import Staff
+from jimcontrol.models import Staff, Agent
 import django
 
 class User(AbstractUser):
@@ -8,7 +8,7 @@ class User(AbstractUser):
 	pincode = models.CharField(max_length=250)
 	bankname = models.CharField(max_length=250)
 	accname = models.CharField(max_length=1000)
-	sponsor = models.CharField(max_length=1000, default='Jimmoney')
+	sponsor = models.CharField(max_length=1000, default='Jimnet')
 	accno = models.CharField(max_length=20)
 	regcode = models.CharField(max_length=20)
 	network = models.IntegerField(default=0)
@@ -18,6 +18,7 @@ class User(AbstractUser):
 	level = models.IntegerField(default=0)
 	dateofmembership = models.DateTimeField(default=django.utils.timezone.now())
 	note = models.BooleanField(default=False) # for notifying new message from admin
+	agent = models.CharField(max_length=200, default='null')
 
 	def __str__(self):
 		return self.username
@@ -48,10 +49,11 @@ class Request(models.Model):
 class Newrequest(models.Model):
 	request = models.ForeignKey(Request, on_delete=models.CASCADE)
 	level = models.CharField(max_length=10, default=2)
+	bankname = models.CharField(max_length=200, default='Nil')
 
 
 class Complain(models.Model):
-	staff = models.ForeignKey(Staff)
+	staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
 	body = models.CharField(max_length=1000)
 	email = models.EmailField(max_length=200)
 	subject = models.CharField(max_length=500)

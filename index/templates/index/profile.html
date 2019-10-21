@@ -6,20 +6,37 @@
 {% block content %}
 	 
 <div class="dashbody">
+	<div>
+		<h4 style="text-align: left; margin-left: 20px;">Referring link: jimnet.co/signup/?sponsor={{user.username}}</h4>
+	</div>
 	<div class="reg-container stages">
 		<img src="{% static 'index/img/user.png' %}" class="legend">
 		<form method="post" action="/editprofile/">
 			{% csrf_token %}
 			<h2 class="userhead">{{user.username}}</h2>
 			<br>
-			<label>Sponsor: {{user.sponsor}}</label>
-			
+			<!-- <label>Sponsor: {{user.sponsor}}</label> -->
+			<div class="sm-rol-1">
+				<div class="col-5">
+					<label>Sponsor: {{user.sponsor}}</label>
+				</div>
+			</div>
+
+			<div class="sm-rol-2">
+				<div class="col-6">
+					<label>Status: {{user.accstatus}}</label>
+				</div>
+			</div>			
+			{% if user.accstatus == 'Booked' %}
+				<br>
+				<label style="font-size: 14px;">Booking Number: {{user.regcode}}</label>
+			{% endif %}
 
 			<div class="rol-1">
 				<span class="sub-topic">Personal Information</span>
 
-				<div class="sm-rol-1">
-					<div class="col-5">
+				<div class="sm-rol-2">
+					<div class="col-6">
 						<label>First Name</label>
 						<input type="text" name="first_name" placeholder="Enter First Name" value="{{user.first_name}}" required>
 					</div>

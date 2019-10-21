@@ -55,17 +55,6 @@ $(document).ready(function(){
 		$('#chartpanel').css({ 'display': 'none' })
 	})
 
-	setInterval(function(){
-		if($('.navbar').width() < 805){
-			$('.navbar #half').removeClass('hide')
-			$('.navbar #full').addClass('hide')
-		}else{
-			$('.navbar #full').removeClass('hide')
-			$('.navbar #half').addClass('hide')
-		}
-	}, 100)
-
-
 	// Handle nav toggel
 	$('.innernavpanel a').click(function(){
 		var ref = $(this).data('access')
@@ -99,17 +88,20 @@ $(document).ready(function(){
 			
 		})
 	})
+	
 
 	$('.infodrop2 .more').click(function(){
 
 		var drop = $(this).data('drop')
 		$('#'+drop).toggle(10, function(){
-
-			// if ($(this).data('plus')){
-			// 	$(this).text('+')
-			// }else{
-			// 	$(this).text('-')
-			// }
+			
+			if ($('#'+drop).data('content')=='plus'){
+				$(this).data('content', 'minus')
+				$('#morebut'+drop).text('+')
+			}else{
+				$('#morebut'+drop).text('-')
+				$(this).data('content', 'plus')
+			}
 		})
 	})
 
@@ -124,4 +116,32 @@ $(document).ready(function(){
 		}
 	})
 
+	$('.regbody .registext').on('click', function(){
+		$('.regbody #regcode').removeClass('hide')
+		$('.regbody #booking').addClass('hide')
+	})
+
+	$('.regbody .booktext').on('click', function(){
+		alert('Please ensure you contact the agent after this booking')
+		$('.regbody #booking').removeClass('hide')
+		$('.regbody #regcode').addClass('hide')
+	})
+
+	$('.paymet input:radio').on('click', function(){
+		var id = $(this).data('id')
+		if(id=='regcode'){
+			$('#regcode').removeClass('hide')
+			$('#booking').addClass('hide')
+			$('#card').addClass('hide')
+		}else if(id=='booking'){
+			$('#booking').removeClass('hide')
+			$('#regcode').addClass('hide')
+			$('#card').addClass('hide')
+			alert('Please ensure to contact the agent after booking for activation')
+		}else{
+			$('#card').removeClass('hide')
+			$('#booking').addClass('hide')
+			$('#regcode').addClass('hide')
+		}
+	})
 })

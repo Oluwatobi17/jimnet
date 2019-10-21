@@ -5,6 +5,7 @@
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
 	<link href="{% static 'index/img/favicon.ico' %}" rel="icon" type="image/x-icon">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style type="text/css">
 		#data{
 			background: white;
@@ -14,6 +15,15 @@
 		.dropimg:hover{
 			cursor: pointer;
 		}
+		.newnote{
+			border-radius: 50%;
+			background: red;
+			padding: 5px;
+		}
+		.newnote:hover{
+			color: red;
+			background: white;
+		}
 	</style>
 
 	<nav class="navbar">
@@ -22,9 +32,9 @@
 			<span id="full">
 				<a href="/jimcontrol/admin/signout" class="loginA">Logout</a>
 				<a href="/jimcontrol/admin/members" class="loginA">Members</a>
-				<a href="/jimcontrol/admin/complains" class="loginA">Messages</a>
+				<a href="/jimcontrol/admin/complains" class="loginA">Messages {% if user.note %}<sup class="newnote">{{user.note}}</sup>{% endif %}</a>
 				<a href="/jimcontrol/admin/pin" class="loginA">Pin</a>
-				<a href="/jimcontrol/admin/createstaff" class="loginA">Create Staff</a>
+				<a href="/jimcontrol/admin/createstaff" class="loginA">Staff</a>
 				<a href="/jimcontrol/admin/requests" class="loginA">Requests</a>
 			</span>
 
@@ -34,12 +44,29 @@
 				<div class="hide" id="data">
 					<a href="/jimcontrol/admin/signout" class="navtag">Logout</a>
 					<a href="/jimcontrol/admin/members" class="navtag">Members</a>
-					<a href="/jimcontrol/admin/complains" class="navtag">Messages</a>
+					<a href="/jimcontrol/admin/complains" class="navtag">Messages {% if user.note %}<sup class="newnote">{{user.note}}</sup>{% endif %}</a>
 					<a href="/jimcontrol/admin/pin" class="navtag">Pin</a>
 					<a href="/jimcontrol/admin/createstaff" class="navtag">Create Staff</a>
 					<a href="/jimcontrol/admin/requests" class="navtag">Requests</a>
 				</div>
 			</span>
+		{% elif author == 'agent' %}
+			<span id="full">
+				<a href="/jimcontrol/agent/signout" class="loginA">Logout</a>
+				<a href="/jimcontrol/agent/profile" class="loginA">Profile</a>
+				<a href="/jimcontrol/agent/booking" class="loginA">Bookings</a>
+			</span>
+
+			<span class="hide dropcontent" id="half">
+				<img src="{% static 'index/img/but.png' %}" class="dropimg">
+
+				<div class="hide" id="data">
+					<a href="/jimcontrol/agent/signout" class="navtag">Logout</a>
+					<a href="/jimcontrol/agent/profile" class="navtag">Profile</a>
+					<a href="/jimcontrol/agent/booking" class="navtag">Bookings</a>
+				</div>
+			</span>
+			
 		{% else %}
 			<span id="full">
 				<a href="/jimcontrol/staff/signout" class="loginA">Logout</a>
@@ -74,6 +101,13 @@
 			{% endfor %}
 		{% endif %}
 	</ul>
+	{% if agent %}
+		<div class="right">
+			<br>
+			<h4 class="alignleft" style="margin-right: 20px;">Balance: #<span class="balance">{{agent.balance}}</span></h4>
+		</div>
+	{% endif %}
+
 	{% block content %}
 
     {% endblock %}

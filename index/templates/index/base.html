@@ -5,45 +5,46 @@
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
 	<link href="{% static 'index/img/favicon.ico' %}" rel="icon" type="image/x-icon">
-	<style type="text/css">
-		#data{
-			background: white;
-			position: fixed;
-			width: 100%;
-		}
-		.dropimg:hover{
-			cursor: pointer;
-		}
-	</style>
+	<meta charset="utf-8" name="keywords" content="jimnet, jim net, making money, become a millionaire, how to become rich, jimnet.co">
+	<meta charset="utf-8" name="description" content="becoming a millionaire with #100">
+	<meta charset="utf-8" name="author" content="Ganiu Ibrahim">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
+
 	<nav class="navbar">
 		<a href="/"><span class="logo">Jim Net</span></a>
-		<form method="post" action="/getContact/">
-			{% csrf_token %}
-			<input type="input" name="users" placeholder="Search for members with username">
-			
-		</form>
+		{% if user.is_authenticated %}
+			<form method="post" action="/getContact/">
+				{% csrf_token %}
+				<input type="input" name="users" placeholder="Search for members with username">
+				
+			</form>
+		
+			<span id="full">
+				<a href="/signout" class="loginA">Logout</a>
+				<a href="/paymenthistory" class="loginA">Payment History</a>
+				<a href="/dashboard" class="loginA">Home</a>
+				<a href="/profile" class="loginA">{{user.username}}'s Profile</a>
+			</span>
 
-		<span id="full">
-			<a href="/signout" class="loginA">Logout</a>
-			<a href="/paymenthistory" class="loginA">Payment History</a>
-			<a href="/dashboard" class="loginA">Home</a>
-			<a href="/profile" class="loginA">{{user.username}}'s Profile</a>
-		</span>
+			<span class="hide dropcontent" id="half">
+				<img src="{% static 'index/img/but.png' %}" class="dropimg">
 
-		<span class="hide dropcontent" id="half">
-			<img src="{% static 'index/img/but.png' %}" class="dropimg">
-
-			<div class="hide" id="data">
-				<a href="/signout" class="navtag">Logout</a>
-				<a href="/paymenthistory" class="navtag">Payment History</a>
-				<a href="/profile" class="navtag">{{user.username}}'s Profile</a>
-				<a href="/dashboard" class="navtag">Home</a>
-			</div>
-		</span>
+				<div class="hide" id="data">
+					<a href="/signout" class="navtag">Logout</a>
+					<a href="/paymenthistory" class="navtag">Payment History</a>
+					<a href="/profile" class="navtag">{{user.username}}'s Profile</a>
+					<a href="/dashboard" class="navtag">Home</a>
+				</div>
+			</span>
+		{% else %}
+			<a href="/signin" class="loginA">Login</a>
+			<a href="/signup" class="loginA">Register</a>
+		{% endif %}
 	</nav>
 	
 </head>
-<body class="dashbody">
+<body class="{% if page == 'login' %}loginbody{% elif page == 'register' %}regbody{% else %}dashbody{% endif %}">
 	<ul id="messagelist">
 		<p id="reactmessage" class="error hide"></p>
 		{% if messages %}
@@ -54,42 +55,45 @@
 			{% endfor %}
 		{% endif %}
 	</ul>
-	<div class="right">
-		<br>
-		<h4 class="alignleft" style="margin-right: 20px;">Balance: #{{user.balance}}; Network: {{user.network}}</h4>
-		<form class="withform" onsubmit="return false;">
-			{% csrf_token %}
-			<label style="color: black;">Withdraw all</label>
 
-			<input type="checkbox" id="check">
-			<input type="submit" value="Withdraw" data-amount="{{user.balance}}" class="withsubmit pointer withdraw" id="withbut">
-		</form>
-	</div>
-	<br>
-	<br>
-	<div class="withdrawcontainer hide">
-
-		<form class="withdrawform" method="post" action="/withdraw/">
-			{% csrf_token %}
-			<img src="{% static 'index/img/close.png' %}" class="closeimg2">
-			<h2>Request Withdraw</h2>
+	{% if user.is_authenticated %}
+		<div class="right">
 			<br>
-			<label style="color: black;">Amount: </label>
-			<input type="number" name="amount" value="" max="{{user.balance}}" min="1000" required id="amountreq">
+			<h4 class="alignleft" style="margin-right: 20px;">Balance: #{{user.balance}}; Network: {{user.network}}</h4>
+			<form class="withform" onsubmit="return false;">
+				{% csrf_token %}
+				<label style="color: black;">Withdraw all</label>
 
-			<h4 class="leftalign">Bank Name: {{user.bankname}}</h4>
+				<input type="checkbox" id="check">
+				<input type="submit" value="Withdraw" data-amount="{{user.balance}}" class="withsubmit pointer withdraw" id="withbut">
+			</form>
+		</div>
+		<br>
+		<br>
+		<div class="withdrawcontainer hide">
 
-			<h4 class="leftalign">Account Name: {{user.accname}}</h4>
+			<form class="withdrawform" method="post" action="/withdraw/">
+				{% csrf_token %}
+				<img src="{% static 'index/img/close.png' %}" class="closeimg2">
+				<h2>Request Withdraw</h2>
+				<br>
+				<label style="color: black;">Amount: </label>
+				<input type="number" name="amount" value="" max="{{user.balance}}" min="1000" required id="amountreq">
 
-			<h4 class="leftalign">Account Number: {{user.accno}}</h4>
-			<h4 style="text-align: left;"><label style="color: black;">Pincode: </label>
-			<input type="password" name="pincode" placeholder="Enter Pincode" required>
+				<h4 class="leftalign">Bank Name: {{user.bankname}}</h4>
 
-			<input type="submit" value="Request" class="requestbut">
-			</h4>
-			<h4><a href="/forgetpincode">Reset Pincode</a></h4>
-		</form>
-	</div>
+				<h4 class="leftalign">Account Name: {{user.accname}}</h4>
+
+				<h4 class="leftalign">Account Number: {{user.accno}}</h4>
+				<h4 style="text-align: left;"><label style="color: black;">Pincode: </label>
+				<input type="password" name="pincode" placeholder="Enter Pincode" required>
+
+				<input type="submit" value="Request" class="requestbut">
+				</h4>
+				<h4><a href="/forgetpincode">Reset Pincode</a></h4>
+			</form>
+		</div>
+	{% endif %}
 	{% block content %}
 
     {% endblock %}
@@ -101,13 +105,12 @@
 	    		<h4 class="white">Call:</h4>
 	    		<h5 class="white footcontent">Adenike on 08177130670</h5>
 	    		<h5 class="white footcontent">Frank on 08144268894</h5>
-	    		<h5 class="white footcontent">Azeeb on 09028801958</h5>
+	    		<h5 class="white footcontent">Evans on 07039755480</h5>
 	    	</div>
 	    	<div class="left footcontainer">
 	    		<h3 class="white">For more details</h3>
 	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">+2348183418725</h5>
-	    		<h5 class="white footcontent">+2348185502574</h5>
+	    		<h5 class="white footcontent">+2349066644048</h5>
 	    		<h5 class="white footcontent">+2348184013127</h5>
 	    	</div>
 	    	<div class="left footcontainer">
@@ -115,7 +118,6 @@
 	    		<h4 class="white">Call:</h4>
 	    		<h5 class="white footcontent">+2348183418725</h5>
 	    		<h5 class="white footcontent">+2348185502574</h5>
-	    		<h5 class="white footcontent">+2348184013127</h5>
 	    	</div>
 	    	<div class="left footcontainer">
 	    		<h3 class="white">For complains</h3>
@@ -136,29 +138,30 @@
     	<p style="clear: both; color: white; font-family: arial; display: inline-flex;margin-top: 70px; margin-left: 20px; text-align: center;">Copyright &copy; Jimbola Nig. Company. All rights reserved</p>
     </footer>
 
-    <div class="not_panel">
-		<div class="title_region">
-			<h4 class="not_title">Notifications {% if user.note %}<img src="{% static 'index/img/newnote.png' %}" class="notImg"> {% else %}<img src="{% static 'index/img/nonote.png' %}" class="notImg">{% endif %}</h4>
-		</div>
-		<div id="not_content" class="hide">
-			{% if notification %}
-		    	<ul>
-		    		{% for not in notification %}
-			    		<a href="#note">
-				    		<li style="list-style-image: url('/static/index/img/notification/{{not.img}}')">
-				    			 {{not.message}} <br><span class="small"> {{not.date}}</span>
-				    		</li>
-			    		</a>
-		    		{% endfor %}
-		    	</ul>
-	    	{% else %}
-	    		<h4>No notification</h4>
-	    	{% endif %}
-	    	<!-- <a href="/notification" class="but_expand"><span class="seemore">See More</span></a> -->
-    	</div>
-    </div>
+    {% if request.user.is_authenticated %}
+	    <div class="not_panel">
+			<div class="title_region">
+				<h4 class="not_title">Notifications {% if user.note %}<img src="{% static 'index/img/newnote.png' %}" class="notImg"> {% else %}<img src="{% static 'index/img/nonote.png' %}" class="notImg">{% endif %}</h4>
+			</div>
+			<div id="not_content" class="hide">
+				{% if notification %}
+			    	<ul>
+			    		{% for not in notification %}
+				    		<a href="#note">
+					    		<li style="list-style-image: url('/static/index/img/notification/{{not.img}}')">
+					    			 {{not.message}} <br><span class="small"> {{not.date}}</span>
+					    		</li>
+				    		</a>
+			    		{% endfor %}
+			    	</ul>
+		    	{% else %}
+		    		<h4>No notification</h4>
+		    	{% endif %}
+		    	<!-- <a href="/notification" class="but_expand"><span class="seemore">See More</span></a> -->
+	    	</div>
+	    </div>
+    {% endif %}
 </body>
-<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
 <script type="text/javascript" src="{% static 'index/js/js.js' %}"></script>
 <script type="text/javascript">
 	$('document').ready(function(){

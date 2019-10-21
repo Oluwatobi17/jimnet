@@ -1,97 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>{{title}}</title>
-	{% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
-	<link href="{% static 'index/img/favicon.ico' %}" rel="icon" type="image/x-icon">
-	<style type="text/css">
-		#data{
-			background: white;
-			position: fixed;
-			width: 100%;
-		}
-		.dropimg:hover{
-			cursor: pointer;
-		}
-	</style>
-	<nav class="navbar">
-		<a href="/"><span class="logo">Jim Net</span></a>
-		{% if user.is_authenticated %}
-			<span id="full">
-				<a href="/signout" class="loginA">Logout</a>
-				<a href="/paymenthistory" class="loginA">Payment History</a>
-				<a href="/dashboard" class="loginA">Home</a>
-				<a href="/profile" class="loginA">{{user.username}}'s Profile</a>
-			</span>
+{% extends "index/base.html" %}
 
-			<span class="hide dropcontent" id="half">
-				<img src="{% static 'index/img/but.png' %}" class="dropimg">
 
-				<div class="hide" id="data">
-					<a href="/signout" class="navtag">Logout</a>
-					<a href="/paymenthistory" class="navtag">Payment History</a>
-					<a href="/profile" class="navtag">{{user.username}}'s Profile</a>
-					<a href="/dashboard" class="navtag">Home</a>
-				</div>
-			</span>
-		{% else %}
-			<a href="/signin" class="loginA">Login</a>
-			<a href="/signup" class="loginA">Register</a>
-		{% endif %}
-	</nav>
-	
-</head>
-<body class="dashbody">
-	<ul id="messagelist">
-		<p id="reactmessage" class="error hide"></p>
-		{% if messages %}
-			{% for message in messages %}
-				<li id="message" {% if message.tags %} class="{{message.tags}}" {% endif %}>
-					{{message}}
-				</li>
-			{% endfor %}
-		{% endif %}
-	</ul>
-	{% if user.is_authenticated %}
-		<div class="right">
-			<br>
-			<h4 class="alignleft" style="margin-right: 20px;">Balance: #{{user.balance}}; Network: {{user.network}}</h4>
-			<form class="withform" onsubmit="return false;">
-				{% csrf_token %}
-				<label style="color: black;">Withdraw all</label>
+{% load static %}
 
-				<input type="checkbox" id="check">
-				<input type="submit" value="Withdraw" data-amount="{{user.balance}}" class="withsubmit pointer withdraw" id="withbut">
-			</form>
-		</div>
-		<br>
-		<br>
-		<div class="withdrawcontainer hide">
-
-			<form class="withdrawform" method="post" action="/withdraw/">
-				{% csrf_token %}
-				<img src="{% static 'index/img/close.png' %}" class="closeimg2">
-				<h2>Request Withdraw</h2>
-				<br>
-				<label style="color: black;">Amount: </label>
-				<input type="number" name="amount" value="" max="{{user.balance}}" min="1000" required id="amountreq">
-
-				<h4 class="leftalign">Bank Name: {{user.bankname}}</h4>
-
-				<h4 class="leftalign">Account Name: {{user.accname}}</h4>
-
-				<h4 class="leftalign">Account Number: {{user.accno}}</h4>
-				<h4 style="text-align: left;"><label style="color: black;">Pincode: </label>
-				<input type="password" name="pincode" placeholder="Enter Pincode" required>
-
-				<input type="submit" value="Request" class="requestbut">
-				</h4>
-
-			</form>
-		</div>
-	{% endif %}
-		
+{% block content %}
 	<div class="introbody">
 		<div class="introslides">
 			
@@ -114,6 +26,11 @@
 				    <div class="text">Caption Three</div>
 				  </div>
 
+				  <div class="mySlides fade">
+				    <img src="{% static 'index/img/favicon.ico' %}" class="slideimg3">
+				    <div class="text">Caption Three</div>
+				  </div>
+
 				  <!-- Next and previous buttons -->
 				  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
 				  <a class="next" onclick="plusSlides(1)">&#10095;</a>
@@ -124,7 +41,8 @@
 			<div style="text-align:center">
 			  <span class="dot" onclick="currentSlide(1)"></span> 
 			  <span class="dot" onclick="currentSlide(2)"></span> 
-			  <span class="dot" onclick="currentSlide(3)"></span> 
+			  <span class="dot" onclick="currentSlide(3)"></span>
+			  <span class="dot" onclick="currentSlide(4)"></span>
 			</div>
 		</div>
 
@@ -215,7 +133,7 @@
 				<tr class="heading">
 					<td class="confirm">5</td>
 					<td class="confirm">100</td>
-					<td class="confirm">#1,000,000</td>
+					<td class="confirm">#1,000,000<sup>+ Tour outside Nigeria </sup></td>
 				</tr>
 
 				<tr class="heading">
@@ -225,59 +143,59 @@
 				</tr>
 			</table>
 			<br>
-			<img src="{% static 'index/img/tree.jpg' %}">
-			<img src="{% static 'index/img/tree2.jpg' %}">
-			<img src="{% static 'index/img/tree3.jpg' %}">
+			<img src="{% static 'index/img/tree.jpg' %}" class="treeimg">
+			<img src="{% static 'index/img/tree2.jpg' %}" class="treeimg">
+			<img src="{% static 'index/img/tree3.jpg' %}" class="treeimg">
 		</div>
 
 		<h3 class="stayleft">HOW DO I JOIN JIMNET</h3>
-		<p class="introcontent">To join the JimNet business platform you only need to fill the online form at <a href="/signup">Register</a> with a registration code which cost #100 only or contact the person who introduced you to the system. Then, start referring.</p>
+		<p class="introcontent">To join the JimNet business platform you only need to fill the online form at <a href="/signup">Register</a> with a registration code or pay with your card online which cost #100 only and contact the person who introduced you to the system for he/her referring link. Then, start referring and earning.</p>
 
 
 		<!-- Frequently asked questions -->
 		<h3 class="stayleft">FAQs</h3>
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="1" data-content="minus">+</button> <span class="faqtxt">How to register?</span>
+			<button class="faqbut more" data-drop="1" id="morebut1" data-content="minus">+</button> <span class="faqtxt">How to register?</span>
 
 			<div class="hide" id="1">
-				<p class="introcontent">Purchase a registration code for #100 from one of JimNet vendors by calling any of the phone numbers below. Then fill the online form at <a href="/signup">Register</a></p>
+				<p class="introcontent">Pay with your card online or purchase a registration code for #100 from one of JimNet vendors by calling any of the phone numbers below. Fill the online form at <a href="/signup">Register</a> or demand for a referring link from the person that introduce you to the system for attachment and teamwork</p>
 			</div>
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="4" data-content="minus">+</button> <span class="faqtxt">How can I get or buy registration code</span>
+			<button class="faqbut more" data-drop="4" id="morebut4" data-content="minus">+</button> <span class="faqtxt">How can I get or buy registration code</span>
 
 			<div class="hide" id="4">
-				<p class="introcontent">Call: Adenike on 08177130670 or Frank on 08144268894 or Azeeb on 09028801958</p>
+				<p class="introcontent">Call: Adenike on 08177130670 or Frank on 08144268894 or Ayobami on 07035774665 or Evans on 07039755480. Alternately, use the online payment gateway by selecting card as your payment method</p>
 			</div>
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="2" data-content="minus">+</button> <span class="faqtxt">What will I do to start earning after registration?</span>
+			<button class="faqbut more" data-drop="2" id="morebut2" data-content="minus">+</button> <span class="faqtxt">What will I do to start earning after registration?</span>
 
 			<div class="hide" id="2">
-				<p class="introcontent">Introduce 10 ambitious people into the system to hit the first level, you have to get them registered into the platform using your username as sponsor/referral name in the registration form ( in exact letter case you use in your login or used in your registration form i.e John is different john ). Then when the 10 ambitious people introduced brings in another set of 10 ambitious people each, you will hit level 2, more earning, more progress and shorter distance between you and your dreams. </p>
+				<p class="introcontent">Introduce 10 ambitious people into the system to hit the first level, you have to get them registered into the platform using your username as sponsor/referral name in the registration form ( in exact letter case you use in your login or used in your registration form i.e John is different john ). Or simply provide them your referring link in your profile page to avoid mistake. Then when the 10 ambitious people introduced brings in their set of 10 ambitious people each by using their referring link, you will hit level 2, more earning and so on. More progress and shorter distance between you and your dreams. </p>
 			</div>
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="3" data-content="minus">+</button> <span class="faqtxt">How much is the registration fee?</span>
+			<button class="faqbut more" data-drop="3" id="morebut3" data-content="minus">+</button> <span class="faqtxt">How much is the registration fee?</span>
 
 			<div class="hide" id="3">
-				<p class="introcontent">The total cost for registering an individual into the system is #100 which is for the registration code.</p>
+				<p class="introcontent">The total cost for registering an individual into the system is #100.</p>
 			</div>
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="5" data-content="minus">+</button> <span class="faqtxt">How many people do I refer?</span>
+			<button class="faqbut more" data-drop="5" id="morebut5" data-content="minus">+</button> <span class="faqtxt">How many people do I refer?</span>
 
 			<div class="hide" id="5">
-				<p class="introcontent">You need to refer 10 ambitious people to hit level 1 and earn #200, then when your 10 people refers their own 10 each, you hit level 2 then get to make your first withdraw and so on.</p>
+				<p class="introcontent">You need to refer 10 ambitious people to hit level 1 and earn #200 and 50% more if you provide the 10 ambitious people within 7days, then when your 10 people refers their own 10 each, you hit level 2 then get to make your first withdraw and so on. Please check the earning tree above for more clearance?</p>
 			</div>
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="12" data-content="minus">+</button> <span class="faqtxt">Can I have a multiple account?</span>
+			<button class="faqbut more" data-drop="12" id="morebut12" data-content="minus">+</button> <span class="faqtxt">Can I have a multiple account?</span>
 
 			<div class="hide" id="12">
 				<p class="introcontent">Yes, but you will later need a unique representative for the Adventurous Stage.</p>
@@ -285,24 +203,32 @@
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="8" data-content="minus">+</button> <span class="faqtxt">How will I withdraw my money?</span>
+			<button class="faqbut more" data-drop="8" id="morebut8" data-content="minus">+</button> <span class="faqtxt">How will I withdraw my money?</span>
 
 			<div class="hide" id="8">
-				<p class="introcontent">Use the withdraw button on your home/dashboard page. Note: The minimum amount that can be withdrawn is #1,000 and the maximum is #5,000,000. Bank details must be provided in your profile page and a correct pincode choosen during registration must be provided in your withdraw form.</p>
+				<p class="introcontent">Use the withdraw button on your home/dashboard page. Note: The minimum amount that can be withdrawn is #1,000 and the maximum is #5,000,000. Bank details must be provided in your profile page and a correct pincode chosen during registration must be provided in your withdraw form.</p>
 			</div>
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="10" data-content="minus">+</button> <span class="faqtxt">What day is the withdrawing day?</span>
+			<button class="faqbut more" data-drop="899" id="morebut899" data-content="minus">+</button> <span class="faqtxt">Is there Incentive?</span>
+
+			<div class="hide" id="899">
+				<p class="introcontent">Yes, getting your first 10 intermediate team within 7days of your account registration earn you 50% bonus of your normal pay. And, at level 5 you will have a free trip/tour to a famous African country</p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="10" id="morebut10" data-content="minus">+</button> <span class="faqtxt">What day is the withdrawing day?</span>
 
 			<div class="hide" id="10">
-				<p class="introcontent">Withdraw requests is accepted anytime but payment is done on Thursdays.</p>
+				<p class="introcontent">Withdraw requests are accepted anytime but payment is done on Thursdays.</p>
 			</div>
 		</div>
 
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="6" data-content="minus">+</button> <span class="faqtxt">How much is the minimum withdraw amount?</span>
+			<button class="faqbut more" data-drop="6" id="morebut6" data-content="minus">+</button> <span class="faqtxt">How much is the minimum withdraw amount?</span>
 
 			<div class="hide" id="6">
 				<p class="introcontent">The minimum amount you can withdraw is #1,000 and the maximum is #5,000,000.</p>
@@ -311,7 +237,7 @@
 
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="7" data-content="minus">+</button> <span class="faqtxt">I forgot my password how can I reset it?</span>
+			<button class="faqbut more" data-drop="7" id="morebut7" data-content="minus">+</button> <span class="faqtxt">I forgot my password how can I reset it?</span>
 
 			<div class="hide" id="7">
 				<p class="introcontent">Click the forget password button in the <a href="/signin">Login</a> page, enter your username in correct letter case, click on 'Reset' then check your mail.</p>
@@ -319,7 +245,7 @@
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="22" data-content="minus">+</button> <span class="faqtxt">How do I know my sponsor/referral?</span>
+			<button class="faqbut more" data-drop="22" id="morebut22" data-content="minus">+</button> <span class="faqtxt">How do I know my sponsor/referral?</span>
 
 			<div class="hide" id="22">
 				<p class="introcontent">Visit your profile page to see your sponsor username. Use the search form in the top navigation bar for more details about your sponsor.</p>
@@ -327,7 +253,7 @@
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="21" data-content="minus">+</button> <span class="faqtxt">How do I know my team?</span>
+			<button class="faqbut more" data-drop="21" id="morebut21" data-content="minus">+</button> <span class="faqtxt">How do I know my team?</span>
 
 			<div class="hide" id="21">
 				<p class="introcontent">Simply click on one of the numbers e.g 10, 100 on the network column in your home page, you will be shown a tree containing all your team.</p>
@@ -335,7 +261,15 @@
 		</div>
 
 		<div class="infodrop2">
-			<button class="faqbut more" data-drop="20" data-content="minus">+</button> <span class="faqtxt">How can I get the contact details of my team members?</span>
+			<button class="faqbut more" data-drop="291" id="morebut291" data-content="minus">+</button> <span class="faqtxt">Is there a deadline for having your first 10 intermediate team?</span>
+
+			<div class="hide" id="291">
+				<p class="introcontent">No, but registering your first 10 intermediate team within 7days after your account registration will earn you 50% bonus of the amount of your normal pay.</p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="20" id="morebut20" data-content="minus">+</button> <span class="faqtxt">How can I get the contact details of my team members?</span>
 
 			<div class="hide" id="20">
 				<p class="introcontent">Simply search for their username by using the search form in the navigation bar. You can search for as many user by typing their username and seperating them with a comma e.g John, Mark, Abraham 
@@ -343,83 +277,57 @@
 				Note that usernames given must be in exact letter case i.e 'Mark' and 'mark' are two different usernames</p>
 			</div>
 		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="298" id="morebut298" data-content="minus">+</button> <span class="faqtxt">Is there spillover?</span>
+
+			<div class="hide" id="298">
+				<p class="introcontent">Yes, there is and that happens when the sponsor specified in your registration form is already on or more than level 1. So, you automatically get assigned to one of that sponsor's team member that is approaching level 1.</p>
+			</div>
+		</div>
+
+		<div class="infodrop2">
+			<button class="faqbut more" data-drop="299" id="morebut299" data-content="minus">+</button> <span class="faqtxt">Can I overtake my sponsor?</span>
+
+			<div class="hide" id="299">
+				<p class="introcontent">Yes, when one or little side of he/her network which you belong is growing more than the other sides. This can be traced by seeing he/her team tree.</p>
+			</div>
+		</div>
 	</div>
 
-    <footer>
-    	<div style="margin: 10px auto;">
-	    	<div class="left footcontainer">
-	    		<h3 class="white">To Purchase Registration code </h3>
-	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">Adenike on 08177130670</h5>
-	    		<h5 class="white footcontent">Frank on 08144268894</h5>
-	    		<h5 class="white footcontent">Azeeb on 09028801958</h5>
-	    	</div>
-	    	<div class="left footcontainer">
-	    		<h3 class="white">For more details</h3>
-	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">+2348183418725</h5>
-	    		<h5 class="white footcontent">+2348185502574</h5>
-	    		<h5 class="white footcontent">+2348184013127</h5>
-	    	</div>
-	    	<div class="left footcontainer">
-	    		<h3 class="white">For complains</h3>
-	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">+2348183418725</h5>
-	    		<h5 class="white footcontent">+2348185502574</h5>
-	    		<h5 class="white footcontent">+2348184013127</h5>
-	    	</div>
-	    	<div class="left footcontainer">
-	    		<h3 class="white">For complains</h3>
-	    		<form action="/complain/" method="post">
-	    			{% csrf_token %}
+	<script type="text/javascript">
+		var slideIndex = 1;
+		showSlides(slideIndex);
 
-	    			{% if not user %}
-	    				<input type="email" name="email" placeholder="Enter your email address" required>
-	    			{% else %}
-	    				<input type="email" name="email" placeholder="Enter your email address" value="{{user.email}}" required>
-	    			{% endif %}
-	    			<input type="text" name="subject" placeholder="Complain subject" required>
-	    			<textarea name="body" placeholder="Write complains" required></textarea>
-	    			<input type="submit" value="Submit">
-	    		</form>
-	    	</div>
-    	</div>
-    	<p style="clear: both; color: white; font-family: arial; display: inline-flex;margin-top: 70px; margin-left: 20px; text-align: center;">Copyright &copy; Jimbola Nig. Company. All rights reserved</p>
-    </footer>
-</body>
-<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
-<script type="text/javascript" src="{% static 'index/js/js.js' %}"></script>
+		// Next/previous controls
+		function plusSlides(n) {
+		  showSlides(slideIndex += n);
+		}
 
-<script type="text/javascript">
-	var slideIndex = 1;
-	showSlides(slideIndex);
+		// Thumbnail image controls
+		function currentSlide(n) {
+		  showSlides(slideIndex = n);
+		}
 
-	// Next/previous controls
-	function plusSlides(n) {
-	  showSlides(slideIndex += n);
-	}
+		// Timer to slide the images automatically
+		setInterval(function(){
+			plusSlides(1);
+		}, 5000)
 
-	// Thumbnail image controls
-	function currentSlide(n) {
-	  showSlides(slideIndex = n);
-	}
-
-	function showSlides(n) {
-	  var i;
-	  var slides = document.getElementsByClassName("mySlides");
-	  var dots = document.getElementsByClassName("dot");
-	  if (n > slides.length) {slideIndex = 1} 
-	  if (n < 1) {slideIndex = slides.length}
-	  for (i = 0; i < slides.length; i++) {
-	      slides[i].style.display = "none"; 
-	  }
-	  for (i = 0; i < dots.length; i++) {
-	      dots[i].className = dots[i].className.replace(" active", "");
-	  }
-	  slides[slideIndex-1].style.display = "block"; 
-	  dots[slideIndex-1].className += " active";
-	}
-</script>
-
-<!-- <script type="text/javascript" src="{% static 'index/js/jsapi' %}"></script> -->
- </html>
+		function showSlides(n) {
+		  var i;
+		  var slides = document.getElementsByClassName("mySlides");
+		  var dots = document.getElementsByClassName("dot");
+		  if (n > slides.length) {slideIndex = 1} 
+		  if (n < 1) {slideIndex = slides.length}
+		  for (i = 0; i < slides.length; i++) {
+		      slides[i].style.display = "none"; 
+		  }
+		  for (i = 0; i < dots.length; i++) {
+		      dots[i].className = dots[i].className.replace(" active", "");
+		  }
+		  slides[slideIndex-1].style.display = "block"; 
+		  dots[slideIndex-1].className += " active";
+		}
+	</script>
+{% endblock %}

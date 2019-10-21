@@ -11,7 +11,7 @@
 			margin-top: 10px;
 		}
 	</style>
-	<div class="dashbody">
+	<div class="dashbody generationbody">
 		<div class="innernavpanel">
 			<a href="#" data-access="#generate" class="innernav innernavshowactive">Generate Pin</a>
 			<a href="#" data-access="#changepin" class="innernav">Change Pin</a>
@@ -20,6 +20,7 @@
 
 		<!-- Generate registration codes -->
 		<div class="innernavactive" id="generate" >
+			
 			<h2>Generate Registration Codes</h2>
 			<div class="dashcontainer">
 				<form class="generateform" action="" method="post">
@@ -63,19 +64,6 @@
 					</table>
 					<br>
 					<button onclick="window.print()">Print</button>
-					<!-- <form class="generateform">
-						<div class="rol-1">
-							<div class="sm-rol-2">
-								<div class="col-6">
-									<label>Send to (email)</label>
-									<input type="email" name="email" placeholder="Enter Email Address">
-								</div>
-							</div>
-						</div>
-						<br>
-						<input type="submit" value="Send" class="gensubmit">
-						<br>
-					</form> -->
 				{% endif %}
 			</div>
 		</div>
@@ -181,5 +169,25 @@
 				<h4>No pin generated yet</h4>
 			{% endif %}
 		</div>
+	</div>
+
+	<div class="hide" id="codegenerated">
+		<table>
+			<div class="left">
+				<!-- <h4>Date: </h4> -->
+				<span class="numberof">Number: {{codes | length}}</span>
+			</div>
+			<tr class="heading">
+				<td class="request">Serial Number</td>
+				<td class="earning">Registration Codes</td>
+			</tr>
+
+			{% for code in codes %}
+				<tr>
+					<td class="request">{{ forloop.counter }}</td>
+					<td class="earning">{{ code }}</td>
+				</tr>
+			{% endfor %}
+		</table>
 	</div>
 {% endblock %}

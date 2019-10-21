@@ -1,161 +1,133 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>{{title}}</title>
-	{% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
-	<link href="{% static 'index/img/favicon.ico' %}" rel="icon" type="image/x-icon">
-	<nav class="navbar">
-		<a href="/"><span class="logo">Jim Net</span></a>
+{% extends "index/base.html" %}
 
-		<a href="/signin" class="loginA">Login</a>
-		<a href="/signup" class="loginA">Register</a>
+{% load static %}
 
-	</nav>
-
-	<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
-	<script type="text/javascript" src="{% static 'index/js/js.js' %}"></script>
-	<script type="text/javascript" src="{% static 'index/js/reg.js' %}"></script>
-</head>
-<body class="regbody">
-	<ul id="messagelist">
-		<p id="reactmessage" class="error hide"></p>
-		{% if messages %}
-			{% for message in messages %}
-				<li id="message" {% if message.tags %} class="{{message.tags}}" {% endif %}>
-					{{message}}
-				</li>
-			{% endfor %}
-		{% endif %}
-	</ul>
+{% block content %}
 	<div class="reg-container">
 		<img src="{% static 'index/img/user.png' %}" class="legend">
-		<form action="" method="post">
-			{% csrf_token %}
-			<h2 class="white">Membership Registration Form</h2>
-			<div class="rol-1">
-				<div class="sm-rol-1">
-					<div class="col-5">
-						<label>Registration code</label>
-						<input type="text" name="regcode" placeholder="Enter Registration Code" required>
-					</div>
+		<h2 class="white">Membership Registration Form</h2>
+	
+		<div>
+			<form action="" method="post">
+				{% csrf_token %}
+				<span class="sub-topic">Payment method</span>
+				<div class="paymet">
+					<input type="radio" name="paymet" value="card" data-id="card" checked> <span class="white">Card</span>
+					<input type="radio" name="paymet" value="code" data-id="regcode"> <span class="white">Code</span>
+					<input type="radio" name="paymet" value="booking" data-id="booking"> <span class="white">Booking</span>
 				</div>
-
-				<div class="sm-rol-2">
-					<div class="col-6">
+				<br>
+				<!-- <div class="lg-rol" id="card">
+					<div class="col-6-lg">
 						<label>Referral/Sponsor</label>
-						<input type="text" name="sponsor" placeholder="Enter Referral" value="Jimmoney" required onmouseout="checksponsor()">
+						<input type="text" name="sponsor" placeholder="Enter Referral" value="{{sponsor}}" required onmouseout="checksponsor()">
 					</div>
-				</div>
-				<span class="sub-topic">Personal Information</span>
+				</div> -->
 
-				<div class="sm-rol-1">
-					<div class="col-5">
-						<label>First Name</label>
-						<input type="text" name="first_name" placeholder="Enter First Name" required>
-					</div>
-				</div>
+				<div class="rol-1">
+					<div id="booking" class="hide">
+						<div class="sm-rol-1">
+							<div class="col-5">
+								<label>Agents</label>
+								<select name="agent">
+									{% for agent in agents %}
+										<option value="{{agent.username}}">{{agent.username}}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
 
-				<div class="sm-rol-2">
-					<div class="col-6">
-						<label>Surname</label>
-						<input type="text" name="last_name" placeholder="Enter Surname" required>
+						<!-- <div class="sm-rol-2">
+							<div class="col-6">
+								<label>Referral/Sponsor</label>
+								<input type="text" name="sponsor" placeholder="Enter Referral" value="{{sponsor}}" required onmouseout="checksponsor()">
+							</div> -->
+						</div>
 					</div>
-				</div>
-				<div class="sm-rol-2">
-					<div class="col-6">
-						<label>Phone No</label>
-						<input type="text" name="phoneno" placeholder="Enter Phone Number" required>
-					</div>
-				</div>
-				<div class="sm-rol-2">
-					<div class="col-6">
-						<label>Email</label>
-						<input type="email" name="email" placeholder="Enter Email" required>
-					</div>
-				</div>
+					<div id="regcode" class="hide">
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<label>Registration code</label>
+								<input type="text" name="regcode" placeholder="Enter Registration Code">
+							</div>
+						</div>
 
-			</div>
-			<!-- <h3 class="sub-topic">Personal Information</h3> -->
-			<span class="sub-topic">Security Information</span>
-			<div class="lg-rol">
-				<div class="col-6-lg">
-					<label>Username</label>
-					<input type="text" name="username" placeholder="Choose Username" onmouseout="checkusername()" required>
-				</div>
-			</div>
-			<div class="rol-1">
-				<div class="sm-rol-2">
-					<div class="col-6">
-						<label>Password</label>
-						<input type="password" name="password" placeholder="Choose Password" required>
-					</div>
-				</div>
-				<div class="sm-rol-2">
-					<div class="col-6">
-						<label>Confirm Password</label>
-						<input type="password" name="password2" placeholder="Confirm Password" onmouseout="checkpassquality()" required>
-					</div>
-				</div>
+						
 
-				<div class="sm-rol-2">
-					<div class="col-6">
-						<label>Pincode</label>
-						<input type="password" name="pincode" placeholder="Confirm Pincode" required>
 					</div>
-				</div>
-				<div class="sm-rol-2">
-					<div class="col-6">
-						<label>Confirm Pincode</label>
-						<input type="password" name="pincode2" placeholder="Confirm Pincode" onmouseout="checkpinquality()" required>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Referral/Sponsor</label>
+							<input type="text" name="sponsor" placeholder="Enter Referral" value="{{sponsor}}" required onmouseout="checksponsor()">
+						</div>
 					</div>
-				</div>
-			</div>
-			<p class="forget">Accept Terms and Conditions <input type="checkbox" required></p>
-			<input type="submit" value="Register" class="regsubmit">
-		</form>
+					<span class="sub-topic">Personal Information</span>
 
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>First Name</label>
+							<input type="text" name="first_name" placeholder="Enter First Name" required>
+						</div>
+					</div>
+
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Surname</label>
+							<input type="text" name="last_name" placeholder="Enter Surname" required>
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Phone No</label>
+							<input type="text" name="phoneno" placeholder="Enter Phone Number" required>
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Email</label>
+							<input type="email" name="email" placeholder="Enter Email" required>
+						</div>
+					</div>
+
+				</div>
+				<span class="sub-topic">Security Information</span>
+				<div class="lg-rol">
+					<div class="col-6-lg">
+						<label>Username</label>
+						<input type="text" name="username" placeholder="Choose Username" onmouseout="checkusername()" required>
+					</div>
+				</div>
+				<div class="rol-1">
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Password</label>
+							<input type="password" name="password" placeholder="Choose Password" required>
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Confirm Password</label>
+							<input type="password" name="password2" placeholder="Confirm Password" onmouseout="checkpassquality()" required>
+						</div>
+					</div>
+
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Pincode</label>
+							<input type="password" name="pincode" placeholder="Confirm Pincode" required>
+						</div>
+					</div>
+					<div class="sm-rol-2">
+						<div class="col-6">
+							<label>Confirm Pincode</label>
+							<input type="password" name="pincode2" placeholder="Confirm Pincode" onmouseout="checkpinquality()" required>
+						</div>
+					</div>
+				</div>
+				<p class="forget">Accept Terms and Conditions <input type="checkbox" required></p>
+				<input type="submit" value="Register" class="regsubmit">
+			</form>
+		</div>
 	</div>
-	<footer>
-    	<div style="margin: 10px auto;">
-	    	<div class="left footcontainer">
-	    		<h3 class="white">To Purchase Registration code </h3>
-	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">Adenike on 08177130670</h5>
-	    		<h5 class="white footcontent">Frank on 08144268894</h5>
-	    		<h5 class="white footcontent">Azeeb on 09028801958</h5>
-	    	</div>
-	    	<div class="left footcontainer">
-	    		<h3 class="white">For more details</h3>
-	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">+2348183418725</h5>
-	    		<h5 class="white footcontent">+2348185502574</h5>
-	    		<h5 class="white footcontent">+2348184013127</h5>
-	    	</div>
-	    	<div class="left footcontainer">
-	    		<h3 class="white">For complains</h3>
-	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">+2348183418725</h5>
-	    		<h5 class="white footcontent">+2348185502574</h5>
-	    		<h5 class="white footcontent">+2348184013127</h5>
-	    	</div>
-	    	<div class="left footcontainer">
-	    		<h3 class="white">For complains</h3>
-	    		<form action="/complain/" method="post">
-	    			{% csrf_token %}
-
-	    			{% if not user %}
-	    				<input type="email" name="email" placeholder="Enter your email address" required>
-	    			{% else %}
-	    				<input type="email" name="email" placeholder="Enter your email address" value="{{user.email}}" required>
-	    			{% endif %}
-	    			<input type="text" name="subject" placeholder="Complain subject" required>
-	    			<textarea name="body" placeholder="Write complains" required></textarea>
-	    			<input type="submit" value="Submit">
-	    		</form>
-	    	</div>
-    	</div>
-    	<p style="clear: both; color: white; font-family: arial; display: inline-flex;margin-top: 70px; margin-left: 20px; text-align: center;">Copyright &copy; Jimbola Nig. Company. All rights reserved</p>
-    </footer>
-</body>
-</html>
+	<script type="text/javascript" src="{% static 'index/js/reg.js' %}"></script>
+{% endblock %}

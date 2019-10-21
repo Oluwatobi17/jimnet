@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import AdminUserForm, StaffUserForm
+from .forms import AdminUserForm, StaffUserForm, AgentUserForm
 from django.contrib import messages
-from .models import AdminUser, Staff, Registrationcode
+from .models import AdminUser, Staff, Agent, Registrationcode, AdminNotification
 from index.models import Request, User, Newrequest, Complain, Notification
 import random;
 from django.core.mail import send_mail
@@ -152,7 +152,13 @@ def staffmembers(request):
 			'title': request.session['staffuser'] +': JimNet Members Details',
 			'author': 'staff',
 			'user': Staff.objects.get(username=request.session['staffuser']),
-			'members': User.objects.all().order_by('-totearning'),
+			'level0': User.objects.filter(level=0).order_by('-totearning'),
+			'level1': User.objects.filter(level=1).order_by('-totearning'),
+			'level2': User.objects.filter(level=2).order_by('-totearning'),
+			'level3': User.objects.filter(level=3).order_by('-totearning'),
+			'level4': User.objects.filter(level=4).order_by('-totearning'),
+			'level5': User.objects.filter(level=5).order_by('-totearning'),
+			'level6': User.objects.filter(level=6).order_by('-totearning'),
 			'length': len(User.objects.all())-1
 		})
 	else:
@@ -177,7 +183,9 @@ def admincomplains(request):
 			'title': 'Admin: JimNet Complains',
 			'author': 'admin',
 			'allcomplains': Complain.objects.all().order_by('msgstatus'),
-			'notifications': Notification.objects.all().order_by('-date')
+			'notifications': Notification.objects.all().order_by('-date'),
+			'user': AdminUser.objects.get(username=request.session['adminuser']),
+			'alert': AdminNotification.objects.all().order_by('-date')
 		})
 	else:
 		return redirect(adminsignin)
@@ -213,6 +221,87 @@ def staffsignout(request):
 	del request.session['staffuser']
 	return redirect(staffsignin)
 
+def agentprofile(request):
+	if request.session.has_key('agentuser'):
+		if request.method=='POST':
+			agent = Agent.objects.get(username=request.session['agentuser'])
+			currentpassword = request.POST['currentpassword']
+			newpassword = request.POST['newpassword']
+			newpassword2 = request.POST['newpassword2']
+			if not newpassword==newpassword2:
+				messages.error(request, 'Password choosen does not match')
+				return redirect(agentprofile)
+
+			if not newpassword:
+				messages.error(request, 'Password cannot be empty')
+				return redirect(agentprofile)
+
+			if not currentpassword==agent.password:
+				messages.error(request, 'Password mismatch')
+				return redirect(agentprofile)
+
+			if newpassword == newpassword2:
+				agent.password = newpassword
+				agent.save()
+
+				messages.success(request, 'Password update successful')
+				return redirect(agentsignin)
+		else:
+			return render(request, 'index/agentprofile.html',{
+				'title': 'Change your password',
+				'author': 'agent',
+				'agent': Agent.objects.get(username=request.session['agentuser'])
+			})
+	else:
+		messages.error(request, 'Please login')
+		return redirect(agentsignin)
+
+
+def agentbooking(request):
+	if request.session.has_key('agentuser'):
+		agent = request.session['agentuser']
+
+		return render(request, 'index/agentbookings.html',{
+			'title': 'Your bookings',
+			'bookings': User.objects.filter(agent=agent),
+			'author': 'agent',
+			'agent': Agent.objects.get(username=request.session['agentuser'])
+		})
+	else:
+		messages.error(request, 'Please login')
+		return redirect(agentsignin)
+
+def agentsignin(request):
+	if request.method=='POST':
+		username = request.POST['username']
+		password = request.POST['password']
+		if not username or not password:
+			messages.error(request, 'Please fill the required fields')
+			return redirect(agentsignin)
+
+		
+		if Agent.objects.filter(username=username, password=password):
+			agent = Agent.objects.get(username=username)
+			agent.lastlogin = django.utils.timezone.now()
+			agent.save()
+			request.session['agentuser'] = username
+			return redirect(agentbooking)
+		else:
+			messages.error(request, 'Invalid login')
+			return redirect(agentsignin)
+
+	else:
+		return render(request, 'index/agentlogin.html', {
+			'title': 'Agent: Jim Net Agent Sign in'
+		})
+
+def agentsignout(request):
+	del request.session['agentuser']
+	return redirect(agentsignin)
+
+
+
+
 
 def adminsignin(request):
 	if request.method=='POST':
@@ -237,7 +326,8 @@ def adminrequests(request):
 			'title': 'Admin: JimNet Members Withdrawal Request',
 			'author': 'admin',
 			'requests': Request.objects.all().order_by('-pk'),
-			'unapproved': Request.objects.filter(adminstatus=False).order_by('-pk')
+			'unapproved': Request.objects.filter(adminstatus=False).order_by('-pk'),
+			'user': AdminUser.objects.get(username=request.session['adminuser'])
 		})
 	else:
 		return redirect(adminsignin)
@@ -258,6 +348,7 @@ def adminprocessrequest(request, req_id):
 
 def adminGeneratePin(request):
 	if request.session.has_key('adminuser'):
+		admin = AdminUser.objects.get(username=request.session['adminuser'])
 		if request.method=='POST':
 			pincode = request.POST['pincode']
 			number = request.POST['number']
@@ -272,7 +363,7 @@ def adminGeneratePin(request):
 				messages.error(request, 'Please fill the require fields')
 				return redirect(adminGeneratePin)
 
-			admin = AdminUser.objects.get(username=request.session['adminuser'])
+			
 			if jimhash(pincode)==admin.pincode:
 				pins = [];
 				for i in range(number):
@@ -296,7 +387,8 @@ def adminGeneratePin(request):
 			return render(request, 'index/generatepin.html', {
 				'title': 'Admin: Generate Jim Membership Reg. Code',
 				'author': 'admin',
-				'pins': Registrationcode.objects.all().order_by('-pk')
+				'pins': Registrationcode.objects.all().order_by('-pk'),
+				'user': admin
 			})
 	else:
 		messages.error(request, 'Please Sign in')
@@ -305,11 +397,19 @@ def adminGeneratePin(request):
 
 def adminmembers(request):
 	if request.session.has_key('adminuser'):
-		return render(request, 'index/members.html', {
+		return render(request, 'index/adminmembers.html', {
 			'title': 'Admin: JimNet Members Details',
 			'author': 'admin',
-			'members': User.objects.all().order_by('-totearning'),
-			'length': len(User.objects.all())-1
+			'level0': User.objects.filter(level=0).order_by('-totearning'),
+			'level1': User.objects.filter(level=1).order_by('-totearning'),
+			'level2': User.objects.filter(level=2).order_by('-totearning'),
+			'level3': User.objects.filter(level=3).order_by('-totearning'),
+			'level4': User.objects.filter(level=4).order_by('-totearning'),
+			'level5': User.objects.filter(level=5).order_by('-totearning'),
+			'level6': User.objects.filter(level=6).order_by('-totearning'),
+			'length': len(User.objects.all())-1,
+			'user': AdminUser.objects.get(username=request.session['adminuser']),
+			'bookedUsers': User.objects.filter(accstatus='Booked')
 		})
 	else:
 		return redirect(adminsignin)
@@ -350,7 +450,9 @@ def createstaff(request):
 			return render(request, 'index/newstaff.html', {
 				'title': 'Admin: Create New Staff',
 				'author': 'admin',
-				'staffs': Staff.objects.all()
+				'staffs': Staff.objects.all(),
+				'agents': Agent.objects.all(),
+				'user': AdminUser.objects.get(username=request.session['adminuser'])
 			})
 	else:
 		return redirect(adminsignin)
@@ -372,8 +474,6 @@ def deletestaff(request, pk):
 def updatejob(request, pk):
 	if request.session.has_key('adminuser'):
 		if request.method=='POST':
-			print('Requests')
-			print(request.POST)
 			staff = Staff.objects.filter(pk=pk)
 			if staff:
 				obj = Staff.objects.get(pk=pk)
@@ -502,6 +602,27 @@ def adminsignout(request):
 		return redirect(adminrequests)
 	else:
 		return redirect('/signin')
+
+
+def createagent(request):
+	if request.session.has_key('adminuser'):
+		form = AgentUserForm(request.POST)
+
+		if form.is_valid():
+			if not request.POST['password']==request.POST['password2']:
+				messages.error(request, 'Passwords does not match')
+				return redirect(createstaff)
+
+			form.save()
+
+			messages.success(request, 'Registration successful')
+			return redirect(createstaff)
+		else:
+			messages.error(request, 'Please ensure to fill all fields')
+			return redirect(adminsignin)
+	else:
+		return redirect(adminsignin)
+
 
 
 # Password hasher

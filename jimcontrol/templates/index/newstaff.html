@@ -4,65 +4,118 @@
 {% load static %}
 
 {% block content %}
+	<script type="text/javascript" src="{% static 'index/js/mustache.js' %}"></script>
 	<div class="dashbody fromleft">
 		<div class="innernavpanel">
 			<a href="#" data-access="#create" class="innernav innernavshowactive">Create Staff</a>
 			<a href="#" data-access="#staff" class="innernav">Staff</a>
+			<a href="#" data-access="#agent" class="innernav">Agent</a>
 		</div>
 
-		<div class="reg-container innernavactive" id="create">
-			<img src="{% static 'index/img/user.png' %}" class="legend">
-			<form method="post" action="">
-				{% csrf_token %}
-				<h2 class="white">New Staff Form</h2>
-				<div class="lg-rol">
-					<div class="col-6-lg">
-						<label>Username</label>
-						<input type="text" name="username" placeholder="Choose Username" required>
-					</div>
-				</div>
-				<div class="rol-1">
-					<div class="sm-rol-1">
-						<div class="col-5">
-							<label>First Name</label>
-							<input type="text" name="firstname" placeholder="Enter First Name" required>
-						</div>
-					</div>
 
-					<div class="sm-rol-2">
-						<div class="col-6">
-							<label>Surname</label>
-							<input type="text" name="lastname" placeholder="Enter Surname" required>
-						</div>
-					</div>
-					<div class="sm-rol-2">
-						<div class="col-6">
-							<label>Password</label>
-							<input type="password" name="password" placeholder="Choose Password" required>
-						</div>
-					</div>
-					<div class="sm-rol-2">
-						<div class="col-6">
-							<label>Confirm</label>
-							<input type="password" name="password2" placeholder="Confirm Password" required>
-						</div>
-					</div>
-				</div>
-				<div class="lg-rol">
-					<div class="col-6-lg">
-						<label>Job</label>
-						<select name="job">
-							<option value="2">Level 2</option>
-							<option value="3">Level 3</option>
-							<option value="4">Level 4</option>
-							<option value="5">Level 5</option>
-							<option value="6">Level 6</option>
-						</select>
-					</div>
-				</div>
+		<template id="bookusersTemplate">
+			<div class="bookedUserContainer">
+				{% verbatim %}
+				<span class="dropfront">{{username}} ({{regcode}})</span>
+				{% endverbatim %}
 				<br>
-				<input type="submit" value="Register" class="regsubmit">
-			</form>
+				<br>
+			</div>
+		</template>
+
+		<div class="reg-container innernavactive" id="create">
+			<div id="newstaff">
+				<img src="{% static 'index/img/user.png' %}" class="legend">
+				<form method="post" action="">
+					{% csrf_token %}
+					<h2 class="white">New Staff Form</h2>
+					<div class="lg-rol">
+						<div class="col-6-lg">
+							<label>Username</label>
+							<input type="text" name="username" placeholder="Choose Username" required>
+						</div>
+					</div>
+					<div class="rol-1">
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<label>First Name</label>
+								<input type="text" name="firstname" placeholder="Enter First Name" required>
+							</div>
+						</div>
+
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<label>Surname</label>
+								<input type="text" name="lastname" placeholder="Enter Surname" required>
+							</div>
+						</div>
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<label>Password</label>
+								<input type="password" name="password" placeholder="Choose Password" required>
+							</div>
+						</div>
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<label>Confirm</label>
+								<input type="password" name="password2" placeholder="Confirm Password" required>
+							</div>
+						</div>
+					</div>
+					<div class="lg-rol">
+						<div class="col-6-lg">
+							<label>Job</label>
+							<select name="job">
+								<option value="1">Level 1</option>
+								<option value="2">Level 2</option>
+								<option value="3">Level 3</option>
+								<option value="4">Level 4</option>
+								<option value="5">Level 5</option>
+								<option value="6">Level 6</option>
+							</select>
+						</div>
+					</div>
+					<br>
+					<input type="submit" value="Register" class="regsubmit">
+				</form>
+
+				<h4 class="newag white">New Agent</h4>
+			</div>
+
+			<div id="newagent" class="hide">
+				<img src="{% static 'index/img/user.png' %}" class="legend">
+				<form method="post" action="/jimcontrol/admin/createagent/">
+					{% csrf_token %}
+					<h2 class="white">New Agent Form</h2>
+					<div class="lg-rol">
+						<div class="col-6-lg">
+							<label>Username</label>
+							<input type="text" name="username" placeholder="Choose Username" required>
+						</div>
+						<div class="col-6-lg">
+							<label>Phone No</label>
+							<input type="text" name="phoneno" placeholder="Enter Phone number" required>
+						</div>
+					</div>
+					<div class="rol-1">
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<label>Password</label>
+								<input type="password" name="password" placeholder="Choose Password" required>
+							</div>
+						</div>
+						<div class="sm-rol-2">
+							<div class="col-6">
+								<label>Confirm</label>
+								<input type="password" name="password2" placeholder="Confirm Password" required>
+							</div>
+						</div>
+					</div>
+					<br>
+					<input type="submit" value="Register" class="regsubmit">
+				</form>
+				<h4 class="newst white">New Staff</h4>
+			</div>
 		</div>
 
 		<!-- All staff details -->
@@ -100,6 +153,7 @@
 											{% csrf_token %}
 											<label style="color: black;">Job: Level {{staff.job}}</label>
 											<select style="background-color: white; color: black;" name="job">
+												<option value="1">Level 1</option>
 												<option value="2">Level 2</option>
 												<option value="3">Level 3</option>
 												<option value="4">Level 4</option>
@@ -139,6 +193,78 @@
 				{% endfor %}
 			{% else %}
 				<p>You are yet to create a staff</p>
+			{% endif %}
+		</div>
+
+		<div class="hide" id="agent">
+			<h2>Agents({{agents | length}})</h2>
+			{% if agents %}
+				{% for agent in agents %}
+					<div class="infodrop">
+						
+						<div>
+							<!-- Info that always show -->
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront">{{agent.username}}</span>
+								</div>
+							</div>
+
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront">{{agent.phoneno}}</span>
+								</div>
+								<span class="right more" data-drop="agent{{agent.pk}}">More</span>
+							</div>
+							<!-- Info that show on click -->
+							<div class="hide" id="agent{{agent.pk}}">
+								<br>
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<span class="dropfront">Password: {{agent.password}}</span>
+									</div>
+								</div>
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<span class="dropfront">Balance: <span id="balance{{agent.pk}}">{{agent.balance}}</span></span>
+										<form onsubmit="return false;" class="updateAgentBalance" data-agent="{{agent.pk}}">
+											<p class="hide balToken">{{csrf_token}}</p>
+											<input type="number" placeholder="Enter amount" id="{{agent.pk}}balText" style="background-color: white; color: black;">
+											<input type="submit" value="Update">
+										</form>
+									</div>
+								</div>
+								<br>
+								<div class="sm-rol-2">
+									<div class="col-6">
+										<a href="#delagent" data-agent="{{agent.pk}}" class="dropfront dropdel delagent">Delete</a>
+									</div>
+								</div>
+								<br>
+								<br>
+
+								<div class="sm-rol-2">
+									<h4>List of Booked</h4>
+									<div class="bookusersTemplateClass" id="temp{{agent.pk}}">
+										<div style="text-align: center;">
+											<img src="{% static 'index/img/loading.gif' %}">
+										</div>
+									</div>
+								</div>
+
+								
+
+								<div class="sm-rol-2" style="margin-top: 30px;">
+									<div class="col-6">
+										<span class="dropfront dropbottom">Last Login: {{agent.lastlogin|date:"d, M, Y G:i"}}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<p>You are yet to create a agent</p>
 			{% endif %}
 		</div>
 	</div>

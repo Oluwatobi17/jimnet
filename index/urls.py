@@ -18,6 +18,9 @@ urlpatterns = [
 	url(r'^getContact/$', views.getContact, name='getContact'),
 	url(r'^forgetpincode/$', views.forgetpincode, name='forgetpincode'),
 	url(r'^checknotification/$', views.Checknotification.as_view(), name='checknotification'),
+	url(r'^api/activate/(?P<pk>[0-9]+)/$', views.ActivateMemberAccount.as_view(), name='activateaccount'),
+	url(r'^api/getAgentBookings/(?P<pk>[0-9]+)/$', views.AgentBookings.as_view(), name='agentbookings'),
+	url(r'^registration/paystack/complete/$', views.completePayment, name='completepayment'),
 ]
 
 

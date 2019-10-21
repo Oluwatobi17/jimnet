@@ -1,7 +1,5 @@
 var usernames = []
-
 $(document).ready(function(){
-
 	$.ajax({
 		url: '/api/usernames',
 		method: 'get',
@@ -12,6 +10,7 @@ $(document).ready(function(){
 		},
 		error: function(err){
 			console.log(err)
+			alert('Error')
 		}
 	})
 })
@@ -20,7 +19,7 @@ $(document).ready(function(){
 function checkusername(){
 	var givename = $('input[name="username"]').val()
 	if(usernames.indexOf(givename) == -1){
-		return true;
+		$('#reactmessage').addClass('hide')
 	}else{
 		$('#reactmessage').removeClass('hide')
 		$('#reactmessage').text('Username: '+givename+' has been taken.')

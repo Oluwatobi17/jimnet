@@ -61,4 +61,35 @@ $(document).ready(function(){
 			}
 		})
 	})
+
+	// For activating a booked user in Staff (Agent)
+	$('#agent').delegate('.active_agent','click', function(){
+		var balance = $('.right .balance').text()
+		if (balance<100){
+			alert('You have insufficient balance')
+			return;
+		}
+		var self = $(this)
+		$(this).undelegate('click')
+		$.ajax({
+			url: '/api/activate/' + self.data('user'),
+			method: 'get',
+			success: function(data){
+				if(data){
+					self.closest('.infodrop').remove()
+					$('.right .balance').text( parseInt(balance - 100 ))
+				}else{
+					console.log('err')
+					$('#reactmessage').removeClass('hide')
+					$('#reactmessage').text('An error occured!')
+				}
+				
+			},
+			error: function(err){
+				console.log(err)
+				$('#reactmessage').removeClass('hide')
+				$('#reactmessage').text('An error occured!')
+			}
+		})
+	})
 })

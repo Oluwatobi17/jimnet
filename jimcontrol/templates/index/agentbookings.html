@@ -1,0 +1,38 @@
+{% extends "index/adminbase.html" %}
+
+
+{% load static %}
+
+{% block content %}
+
+	<div class="dashbody fromleft">
+
+		<div id="agent">
+			<h2>Bookings({{bookings | length}})</h2>
+			{% if bookings %}
+				{% for booking in bookings %}
+					<div class="infodrop">
+						<div>
+							<!-- Info that always show -->
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront">{{booking.username}}</span>
+								</div>
+							</div>
+
+							<div class="sm-rol-2">
+								<div class="col-6">
+									<span class="dropfront">{{booking.regcode}}</span>
+									<a href="#active" data-user="{{booking.id}}" class="active_agent">Activate</a>
+								</div>
+								<span class="right more">{{booking.dateofmembership}}</span>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<p>All booking are probably done.</p>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

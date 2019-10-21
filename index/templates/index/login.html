@@ -1,114 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>{{title}}</title>
-	{% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
-	<link href="{% static 'index/img/favicon.ico' %}" rel="icon" type="image/x-icon">
-	<nav class="navbar">
-		<a href="/"><span class="logo">Jim Net</span></a>
+{% extends "index/base.html" %}
 
-		<a href="/signin" class="loginA">Login</a>
-		<a href="/signup" class="loginA">Register</a>
+{% load static %}
 
-	</nav>
-</head>
-<body class="loginbody">
-	<ul id="messagelist">
-		<!-- <p id="reactmessage" class="error"></p> -->
-		{% if messages %}
-			{% for message in messages %}
-				<li id="message" {% if message.tags %} class="{{message.tags}}" {% endif %}>
-					{{message}}
-				</li>
-			{% endfor %}
-		{% endif %}
-	</ul>
-
+{% block content %}
 	<!-- Login form -->
-	<div class="login-container innernavactive" data-access="#login">
-		<img src="{% static 'index/img/user.png' %}" class="legend">
-		<form action="" method="post">
-			{% csrf_token %}
-			<h1>Member Login</h1>
-			<div class="login-field">
-				<label class="alone">Username </label>
-				<input type="text" name="username" placeholder="Enter Username" class="login-input" required>
-			</div>
+	<div class="loginbody">
+		<div class="login-container innernavactive" data-access="#login">
+			<img src="{% static 'index/img/user.png' %}" class="legend">
+			<form action="" method="post">
+				{% csrf_token %}
+				<h1 class="white">Member Login</h1>
+				<div class="login-field">
+					<label class="alone">Username </label>
+					<input type="text" name="username" placeholder="Enter Username" class="login-input" required>
+				</div>
 
-			<div class="login-field">
-				<label class="alone">Password </label>
-				<input type="password" name="password" placeholder="Enter Password" class="login-input" required>
-			</div>
+				<div class="login-field">
+					<label class="alone">Password </label>
+					<input type="password" name="password" placeholder="Enter Password" class="login-input" required>
+				</div>
 
-			<div class="login-field">
-				<input type="submit" value="Login" class="login-submit">
-				<p class="forget">Forget password? <a href="#" class="forgetpass" data-access="#forget">Click here</a></p>
+				<div class="login-field">
+					<input type="submit" value="Login" class="login-submit">
+					<p class="forget">Forget password? <a href="#" class="forgetpass" data-access="#forget">Click here</a></p>
 
-			</div>
-		</form>
+				</div>
+			</form>
 
+		</div>
+
+		<!-- Forget password form -->
+		<div id="forget" class="login-container hide">
+			<img src="{% static 'index/img/user.png' %}" class="legend">
+			<form action="/forgetpass/" method="post">
+				{% csrf_token %}
+				<h1>Forget Password</h1>
+				<div class="login-field">
+					<label class="alone">Username </label>
+					<input type="text" name="username" placeholder="Enter Username" class="login-input" required>
+				</div>
+
+				<div class="login-field">
+					<input type="submit" value="Reset" class="login-submit">
+					<p class="forget">Not yet a member? <a href="/signup">Register</a></p>
+				</div>
+			</form>
+		</div>
 	</div>
-
-	<!-- Forget password form -->
-	<div id="forget" class="login-container hide">
-		<img src="{% static 'index/img/user.png' %}" class="legend">
-		<form action="/forgetpass/" method="post">
-			{% csrf_token %}
-			<h1>Forget Password</h1>
-			<div class="login-field">
-				<label class="alone">Username </label>
-				<input type="text" name="username" placeholder="Enter Username" class="login-input" required>
-			</div>
-
-			<div class="login-field">
-				<input type="submit" value="Reset" class="login-submit">
-				<p class="forget">Not yet a member? <a href="/signup">Register</a></p>
-			</div>
-		</form>
-	</div>
-	<footer>
-    	<div style="margin: 10px auto;">
-	    	<div class="left footcontainer">
-	    		<h3 class="white">To Purchase Registration code </h3>
-	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">Adenike on 08177130670</h5>
-	    		<h5 class="white footcontent">Frank on 08144268894</h5>
-	    		<h5 class="white footcontent">Azeeb on 09028801958</h5>
-	    	</div>
-	    	<div class="left footcontainer">
-	    		<h3 class="white">For more details</h3>
-	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">+2348183418725</h5>
-	    		<h5 class="white footcontent">+2348185502574</h5>
-	    		<h5 class="white footcontent">+2348184013127</h5>
-	    	</div>
-	    	<div class="left footcontainer">
-	    		<h3 class="white">For complains</h3>
-	    		<h4 class="white">Call:</h4>
-	    		<h5 class="white footcontent">+2348183418725</h5>
-	    		<h5 class="white footcontent">+2348185502574</h5>
-	    		<h5 class="white footcontent">+2348184013127</h5>
-	    	</div>
-	    	<div class="left footcontainer">
-	    		<h3 class="white">For complains</h3>
-	    		<form action="/complain/" method="post">
-	    			{% csrf_token %}
-
-	    			{% if not user %}
-	    				<input type="email" name="email" placeholder="Enter your email address" required>
-	    			{% else %}
-	    				<input type="email" name="email" placeholder="Enter your email address" value="{{user.email}}" required>
-	    			{% endif %}
-	    			<input type="text" name="subject" placeholder="Complain subject" required>
-	    			<textarea name="body" placeholder="Write complains" required></textarea>
-	    			<input type="submit" value="Submit">
-	    		</form>
-	    	</div>
-    	</div>
-    	<p style="clear: both; color: white; font-family: arial; display: inline-flex;margin-top: 70px; margin-left: 20px; text-align: center;">Copyright &copy; Jimbola Nig. Company. All rights reserved</p>
-    </footer>
-</body>
-<script type="text/javascript" src="{% static 'index/js/jquery.js' %}"></script>
-<script type="text/javascript" src="{% static 'index/js/js.js' %}"></script>
-</html>
+{% endblock %}

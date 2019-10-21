@@ -8,6 +8,156 @@ a{
 	text-decoration: none;
 	color: #1e90ff;
 }
+h1, h2,h3, h4,h5, h6{
+	font-family: arial;
+	text-align: center;
+	margin-bottom: 2px;
+}
+
+/* Image slideshow css */
+.dropimg:hover{
+	cursor: pointer;
+}
+.introimg{
+	width: 100%;
+	height: 150px;
+}
+.introslides{
+	width: 100%;
+	height: 520px;
+	overflow: hidden;
+	padding: 0px;
+}
+.slideshow-container {
+  margin: auto;
+  padding-bottom: 0px;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+  width: 99%;
+  height: 420px;
+}
+.slideimg3{
+	width: 100%;
+	height: 420px;
+	margin: 0px;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 300px;
+  width: auto;
+  margin-top: -22px;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  background: green;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 15px;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 4px 12px;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 10px 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+.login-container{
+	margin: 80px auto;
+	background: black;
+	opacity: 0.8;
+	width: 35%;
+	padding: 35px 70px;
+	border-radius: 10px;
+}
+
+.legend{
+	width: 30%;
+	height: 30%;
+	text-align: center;
+	margin: 10px auto;
+	margin-bottom: 10px;
+	display: block;
+	margin-top: -100px;
+	border-radius: 50%;
+	border: 2px solid coral;
+}
+
+@media print{
+	nav{
+		display: none;
+	}
+	.generationbody{
+		display: none;
+	}
+	#codegenerated{
+		display: block;
+	}
+}
 .navbar{
 	background: green;
 	width: 100%;
@@ -31,16 +181,6 @@ a{
 	margin-top: 15px;
 	margin-right: 10px;
 }
-/*.loginA{
-	border: 3px solid white;
-	border-radius: 3px;
-	padding: 10px;
-	margin: 10px;
-	float: right;
-	color: white;
-	font-weight: bolder;
-	font-family: arial;
-}*/
 .loginA{
 	padding: 10px 5px;
 	margin: 10px 5px;
@@ -50,7 +190,12 @@ a{
 	font-family: arial;
 }
 #data{
-	position:;
+	background: white;
+	position: fixed;
+	width: 100%;
+}
+.dropimg:hover{
+	cursor: pointer;
 }
 .navtag{
 	padding: 10px;
@@ -74,25 +219,12 @@ a{
 }
 .regbody{
 	background: url('/static/index/img/jim4.jpg');
-	background-size: 100%;
 	padding: 0px;
 	margin: 0px;
+	background-size: cover;
+	background-position: top;
 }
 
-h1, h2,h3, h4,h5, h6{
-	color: white;
-	font-family: arial;
-	text-align: center;
-	margin-bottom: 2px;
-}
-.login-container{
-	margin: 80px auto;
-	background: black;
-	opacity: 0.8;
-	width: 35%;
-	padding: 35px 70px;
-	border-radius: 10px;
-}
 .reg-container{
 	margin: 80px auto;
 	background: black;
@@ -154,17 +286,6 @@ label{
 }
 .login-submit:hover{
 	cursor: pointer;
-}
-.legend{
-	width: 30%;
-	height: 30%;
-	text-align: center;
-	margin: 10px auto;
-	margin-bottom: 10px;
-	display: block;
-	margin-top: -100px;
-	border-radius: 50%;
-	border: 2px solid coral;
 }
 .forget{
 	color: white;
@@ -284,19 +405,16 @@ label{
 }
 .dashbody{
 	background: url('/static/index/img/background.png');
+	box-sizing: border-box;
 }
 .dashcontainer{
 	padding: 20px 30px;
-}
-.dashbody h1,h2,h3,h4,h5,h6{
-	color: black;
 }
 .reg-container h2{
 	color: white;
 }
 .dashcontainer table{
-	width: 100%;
-	border: 0px solid black;
+	border: 1px solid black;
 	border-spacing: 0px;
 }
 .dashcontainer td{
@@ -304,7 +422,6 @@ label{
 	padding: 10px 10px;
 	border-collapse: collapse;
 	font-family: arial;
-	font-size: 15px;
 	text-align: center;
 }
 .level{
@@ -489,9 +606,7 @@ td a{
 	border: 1px solid #ccc;
 	padding: 10px;
 	border-radius: 4px;
-	width: 90%;
 	margin: 10px auto;
-	margin-left: 10px;
 }
 .fromleft{
 	text-align: left;
@@ -509,8 +624,6 @@ td a{
 	font-family: arial;
 	font-weight: bolder;
 	font-size: 15px;
-}
-.more:hover{
 	cursor: pointer;
 }
 .jobupdatabut{
@@ -555,6 +668,13 @@ ul#messagelist {
     padding: 0;
     margin: 0;
 }
+.registext, .booktext{
+	cursor: pointer;
+}
+.white{
+	color: white;
+	font-family: arial;
+}
 
 ul#messagelist li {
     display: block;
@@ -590,9 +710,6 @@ ul#messagelist li.error {
 	font-size: 13px;
 }
 
-.white{
-	color: white;
-}
 .withdrawform{
 	background: white;
 	border-radius: 5px;
@@ -624,12 +741,9 @@ ul#messagelist li.error {
 }
 footer{
 	background: green;
-	width: 100%;
-	padding-top: 20px;
 	margin-bottom: 0px;
-}
-.footcontainer{
-	margin-left: 10px;
+	padding: 5px;
+	box-sizing: border-box;
 }
 .footcontent{
 	margin-top: 10px;
@@ -665,8 +779,6 @@ footer{
 	font-size: 20px;
 	font-weight: bold;
 	border: 1px dashed;
-}
-.faqbut:hover{
 	cursor: pointer;
 }
 .faqtxt{
@@ -679,9 +791,13 @@ footer{
 	margin: 20px 0px;
 	text-align: center;
 }
+.footcontainer{
+	margin-right: 20px;
+}
 .footcontainer input{
 	display: block;
 	margin: 10px;
+	margin-right: 0px;
 	width: 100%;
 	height: 20px;
 	border: 1px solid white;
@@ -689,6 +805,7 @@ footer{
 .footcontainer textarea{
 	height: 100px;
 	margin: 10px;
+	margin-right: 0px;
 	width: 100%;
 	font-family: arial;
 }
@@ -800,113 +917,646 @@ footer p{
 	height: 30px;
 	width: 30%;
 	margin-right: 0px;
+	padding: 5px;
 }
-.introimg{
-	width: 100%;
-	height: 150px;
+#codegenerated{
+	margin: 30px auto;
 }
-.introslides{
-	width: 100%;
-	height: 520px;
-	overflow: hidden;
-	padding: 0px;
+.newst, .newag{
+	cursor: pointer;
 }
-/* Slide image styling */
-/* Slideshow container */
-.slideshow-container {
-  margin: auto;
-  padding-bottom: 0px;
+.active_agent{
+	padding: 8px;
+	color: white;
+	font-family: arial;
+	background: green;
+	border-radius: 2px;
+	float: right;
+	font-size: 14px;
 }
-
-/* Hide the images by default */
-.mySlides {
-  display: none;
-  width: 99%;
-  height: 420px;
-}
-.slideimg3{
-	width: 100%;
-	height: 420px;
-	margin: 0px;
+.bookusersTemplateClass img{
+	width: 50px;
+	height: 50px;
 }
 
-/* Next & previous buttons */
-.prev, .next {
-  cursor: pointer;
-  position: absolute;
-  top: 40%;
-  width: auto;
-  margin-top: -22px;
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
-  background: green;
+@media (max-width: 1024px){
+	
+	.treeimg{
+		width: 100%;
+	}
+	.legend{
+		margin-top: -95px;
+	}
+	.login-container{
+		width: 35%;
+		padding: 35px 50px;
+	}
+	.reg-container{
+		margin: 80px auto;
+		opacity: 0.8;
+		width: 35%;
+		padding: 30px 40px;
+		border-radius: 10px;
+	}
+	.col-6{
+		max-width: 100%;
+	}
+	.col-6 input{
+		width: 100%;
+	}
+	.sm-rol-2{
+		width: 100%;
+		display: inline-block;
+	}
+	.dashcontainer td{
+		padding: 3px
+	}
+	.dashcontainer{
+		padding: 20px 10px;
+	}
+	td a{
+		padding: 10px 8px;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.dashcontainer table{
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	.withdrawform{
+		width: 80%;
+	}
+	.navbar input{
+		padding: 3px;
+		box-sizing: border-box;
+	}
+
+	.innernavpanel{
+		width: 100%;
+		padding: 10px 0px;
+	}
+	.dropdel{
+		margin-top: 10px;
+		display: block;
+		width: 16%;
+	}
 }
 
-/* Position the "next button" to the right */
-.next {
-  right: 15px;
-  border-radius: 3px 0 0 3px;
+@media (max-width: 360px){
+	.treeimg{
+		width: 100%;
+	}
+	.legend{
+		margin-top: -60px;
+	}
+	.login-container{
+		width: 70%;
+		padding: 35px 40px;
+	}
+	.reg-container{
+		margin: 80px auto;
+		opacity: 0.8;
+		width: 75%;
+		padding: 30px 40px;
+		border-radius: 10px;
+	}
+	.col-6{
+		max-width: 100%;
+	}
+	.col-6 input{
+		width: 100%;
+	}
+	.sm-rol-2{
+		width: 100%;
+		display: inline-block;
+	}
+	.dashcontainer td{
+		padding: 3px;
+	}
+	.dashcontainer{
+		padding: 20px 10px;
+	}
+	td a{
+		padding: 10px 8px;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.dashcontainer table{
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	.withdrawform{
+		width: 80%;
+	}
+	.navbar input{
+		width: 47%;
+		padding: 3px;
+		box-sizing: border-box;
+	}
+	.navbar #half{
+		display: inline;
+	}
+	.navbar #full{
+		display: none;
+	}
+	
+	.innernavpanel{
+		width: 100%;
+		padding: 10px 0px;
+	}
+	.dropdel{
+		margin-top: 10px;
+		display: block;
+		width: 16%;
+	}
+}
+@media (max-width: 375px){
+	
+	.treeimg{
+		width: 100%;
+	}
+	.legend{
+		margin-top: -60px;
+	}
+	.login-container{
+		width: 70%;
+		padding: 35px 40px;
+	}
+	.reg-container{
+		margin: 80px auto;
+		opacity: 0.8;
+		width: 75%;
+		padding: 30px 40px;
+		border-radius: 10px;
+	}
+	.col-6{
+		max-width: 100%;
+	}
+	.col-6 input{
+		width: 100%;
+	}
+	.sm-rol-2{
+		width: 100%;
+		display: inline-block;
+	}
+	.dashcontainer td{
+		padding: 3px
+	}
+	.dashcontainer{
+		padding: 20px 10px;
+	}
+	td a{
+		padding: 10px 8px;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.dashcontainer table{
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	.withdrawform{
+		width: 80%;
+	}
+	.navbar input{
+		width: 47%;
+		padding: 3px;
+		box-sizing: border-box;
+	}
+	.navbar #half{
+		display: inline;
+	}
+	.navbar #full{
+		display: none;
+	}
+	
+	.innernavpanel{
+		width: 100%;
+		padding: 10px 0px;
+	}
+	.dropdel{
+		margin-top: 10px;
+		display: block;
+		width: 16%;
+	}
+}
+@media (max-width: 411px){
+	
+	.treeimg{
+		width: 100%;
+	}
+	.legend{
+		margin-top: -60px;
+	}
+	.login-container{
+		width: 70%;
+		padding: 35px 40px;
+	}
+	.reg-container{
+		margin: 80px auto;
+		opacity: 0.8;
+		width: 75%;
+		padding: 30px 40px;
+		border-radius: 10px;
+	}
+	.col-6{
+		max-width: 100%;
+	}
+	.col-6 input{
+		width: 100%;
+	}
+	.sm-rol-2{
+		width: 100%;
+		display: inline-block;
+	}
+	.dashcontainer td{
+		padding: 3px
+	}
+	.dashcontainer{
+		padding: 20px 10px;
+	}
+	td a{
+		padding: 10px 8px;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.dashcontainer table{
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	.withdrawform{
+		width: 80%;
+	}
+	.navbar input{
+		width: 47%;
+		padding: 3px;
+		box-sizing: border-box;
+	}
+	.navbar #half{
+		display: inline;
+	}
+	.navbar #full{
+		display: none;
+	}
+	
+	.innernavpanel{
+		width: 100%;
+		padding: 10px 0px;
+	}
+	.dropdel{
+		margin-top: 10px;
+		display: block;
+		width: 16%;
+	}
+}
+@media (max-width: 480px){
+	
+	.treeimg{
+		width: 100%;
+	}
+	.legend{
+		margin-top: -60px;
+	}
+	.login-container{
+		width: 70%;
+		padding: 35px 40px;
+	}
+	.reg-container{
+		margin: 80px auto;
+		opacity: 0.8;
+		width: 75%;
+		padding: 30px 40px;
+		border-radius: 10px;
+	}
+	.col-6{
+		max-width: 100%;
+	}
+	.col-6 input{
+		width: 100%;
+	}
+	.sm-rol-2{
+		width: 100%;
+		display: inline-block;
+	}
+	.dashcontainer td{
+		padding: 3px
+	}
+	.dashcontainer{
+		padding: 20px 10px;
+	}
+	td a{
+		padding: 10px 8px;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.dashcontainer table{
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	.withdrawform{
+		width: 80%;
+	}
+	.navbar input{
+		width: 47%;
+		padding: 3px;
+		box-sizing: border-box;
+	}
+	.navbar #half{
+		display: inline;
+	}
+	.navbar #full{
+		display: none;
+	}
+	
+	.innernavpanel{
+		width: 100%;
+		padding: 10px 0px;
+	}
+	.dropdel{
+		margin-top: 10px;
+		display: block;
+		width: 16%;
+	}
+}
+@media (max-width: 414px){
+	
+	.treeimg{
+		width: 100%;
+	}
+	.legend{
+		margin-top: -60px;
+	}
+	.login-container{
+		width: 70%;
+		padding: 35px 40px;
+	}
+	.reg-container{
+		margin: 80px auto;
+		opacity: 0.8;
+		width: 75%;
+		padding: 30px 40px;
+		border-radius: 10px;
+	}
+	.col-6{
+		max-width: 100%;
+	}
+	.col-6 input{
+		width: 100%;
+	}
+	.sm-rol-2{
+		width: 100%;
+		display: inline-block;
+	}
+	.dashcontainer td{
+		padding: 3px
+	}
+	.dashcontainer{
+		padding: 20px 10px;
+	}
+	td a{
+		padding: 10px 8px;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.dashcontainer table{
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	.withdrawform{
+		width: 80%;
+	}
+	.navbar input{
+		width: 47%;
+		padding: 3px;
+		box-sizing: border-box;
+	}
+	.navbar #half{
+		display: inline;
+	}
+	.navbar #full{
+		display: none;
+	}
+	
+	.innernavpanel{
+		width: 100%;
+		padding: 10px 0px;
+	}
+	.dropdel{
+		margin-top: 10px;
+		display: block;
+		width: 16%;
+	}
 }
 
-/* On hover, add a black background color with a little bit see-through */
-.prev:hover, .next:hover {
-  background-color: rgba(0,0,0,0.8);
+@media (max-width: 640px){
+	
+	.treeimg{
+		width: 100%;
+	}
+	.legend{
+		margin-top: -60px;
+	}
+	.login-container{
+		width: 70%;
+		padding: 35px 40px;
+	}
+	.reg-container{
+		margin: 80px auto;
+		opacity: 0.8;
+		width: 75%;
+		padding: 30px 40px;
+		border-radius: 10px;
+	}
+	.col-6{
+		max-width: 100%;
+	}
+	.col-6 input{
+		width: 100%;
+	}
+	.sm-rol-2{
+		width: 100%;
+		display: inline-block;
+	}
+	.dashcontainer td{
+		padding: 3px
+	}
+	.dashcontainer{
+		padding: 20px 10px;
+	}
+	td a{
+		padding: 10px 8px;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.dashcontainer table{
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	.withdrawform{
+		width: 80%;
+	}
+	.navbar input{
+		width: 47%;
+		padding: 3px;
+		box-sizing: border-box;
+	}
+	.navbar #half{
+		display: inline;
+	}
+	.navbar #full{
+		display: none;
+	}
+	
+	.innernavpanel{
+		width: 100%;
+		padding: 10px 0px;
+	}
+	.dropdel{
+		margin-top: 10px;
+		display: block;
+		width: 16%;
+	}
 }
-
-/* Caption text */
-.text {
-  color: #f2f2f2;
-  font-size: 15px;
-  padding: 4px 12px;
-  bottom: 10px;
-  width: 100%;
-  text-align: center;
+@media (max-width: 768px){
+	
+	.treeimg{
+		width: 100%;
+	}
+	.legend{
+		margin-top: -95px;
+	}
+	.login-container{
+		width: 75%;
+		padding: 35px 30px;
+	}
+	.reg-container{
+		margin: 80px auto;
+		opacity: 0.8;
+		width: 75%;
+		padding: 30px 40px;
+		border-radius: 10px;
+	}
+	.col-6{
+		max-width: 100%;
+	}
+	.col-6 input{
+		width: 100%;
+	}
+	.sm-rol-2{
+		width: 100%;
+		display: inline-block;
+	}
+	.dashcontainer td{
+		padding: 3px
+	}
+	.dashcontainer{
+		padding: 20px 10px;
+	}
+	td a{
+		padding: 10px 8px;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.dashcontainer table{
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	.withdrawform{
+		width: 80%;
+	}
+	.navbar input{
+		width: 47%;
+		padding: 3px;
+		box-sizing: border-box;
+	}
+	.innernavpanel{
+		width: 100%;
+		padding: 10px 0px;
+	}
+	.dropdel{
+		margin-top: 10px;
+		display: block;
+		width: 16%;
+	}
 }
-
-/* Number text (1/3 etc) */
-.numbertext {
-  color: #f2f2f2;
-  font-size: 12px;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
+@media (max-width: 800px){
+	
+	.treeimg{
+		width: 100%;
+	}
+	.legend{
+		margin-top: -95px;
+	}
+	.login-container{
+		width: 75%;
+		padding: 35px 30px;
+	}
+	.reg-container{
+		margin: 80px auto;
+		opacity: 0.8;
+		width: 75%;
+		padding: 30px 40px;
+		border-radius: 10px;
+	}
+	.col-6{
+		max-width: 100%;
+	}
+	.col-6 input{
+		width: 100%;
+	}
+	.sm-rol-2{
+		width: 100%;
+		display: inline-block;
+	}
+	.dashcontainer td{
+		padding: 3px;
+	}
+	.dashcontainer{
+		padding: 20px 10px;
+	}
+	td a{
+		padding: 10px 8px;
+		font-weight: normal;
+		font-size: 14px;
+	}
+	.dashcontainer table{
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	.withdrawform{
+		width: 80%;
+	}
+	.navbar input{
+		width: 30%;
+		padding: 3px;
+		box-sizing: border-box;
+	}
+	
+	.innernavpanel{
+		width: 100%;
+		padding: 10px 0px;
+	}
+	.dropdel{
+		margin-top: 10px;
+		display: block;
+		width: 16%;
+	}
 }
-
-/* The dots/bullets/indicators */
-.dot {
-  cursor: pointer;
-  height: 15px;
-  width: 15px;
-  margin: 10px 2px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-  transition: background-color 0.6s ease;
-}
-
-.active, .dot:hover {
-  background-color: #717171;
-}
-
-/* Fading animation */
-.fade {
-  -webkit-animation-name: fade;
-  -webkit-animation-duration: 1.5s;
-  animation-name: fade;
-  animation-duration: 1.5s;
-}
-
-@-webkit-keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
-}
-
-@keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
+@media (max-width: 320px){
+	.dashcontainer td{
+		padding: 2px;
+		font-size: 14px;
+	}
+	.navbar input{
+		padding: 1px;
+		width: 40%;
+	}
 }
